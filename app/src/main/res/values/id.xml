@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="top" type="id"/>
+    <item name="sportSection" type="id"/>
+    <item name="dateSection" type="id"/>
+    <item name="timeSection" type="id"/>
+    <item name="skillSection" type="id"/>
+    <item name="backButton" type="id"/>
+    <item name="searchButton" type="id"/>
+    <item name="titleTextView" type="id"/>
+    <item name="sportLabel" type="id"/>
+    <item name="sportSpinner" type="id"/>
+    <item name="locationLabel" type="id"/>
+    <item name="locationEditText" type="id"/>
+    <item name="dateLabel" type="id"/>
+    <item name="timeLabel" type="id"/>
+    <item name="skillLevelLabel" type="id"/>
+    <item name="skillLevelSpinner" type="id"/>
+    <item name="createGameButton" type="id"/>
+    <item name="calendarIcon" type="id"/>
+    <item name="selectedLocationTextView" type="id"/>
+    <item name="locationLayout" type="id"/>
+    <item name="selectedDateTextView" type="id"/>
+    <item name="startHourLabel" type="id"/>
+    <item name="startHourSpinner" type="id"/>
+    <item name="startAmPmSpinner" type="id"/>
+    <item name="endHourLabel" type="id"/>
+    <item name="endHourSpinner" type="id"/>
+    <item name="endAmPmSpinner" type="id"/>
+</resources>

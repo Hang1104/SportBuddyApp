@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "92468920254",
+    "project_id": "sport-buddy-14ab2",
+    "storage_bucket": "sport-buddy-14ab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92468920254:android:ab8bae968698bacf1583ef",
+        "android_client_info": {
+          "package_name": "my.edu.utar.assignment2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRap8uRQcRz1nYMx7RvQUJJOKUgEFT1lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
