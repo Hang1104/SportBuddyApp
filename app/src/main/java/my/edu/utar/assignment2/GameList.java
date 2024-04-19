@@ -29,9 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.edu.utar.assignment2.createGame.Game;
-
-public class Home extends AppCompatActivity {
+public class GameList extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListView gamesListView;
     private List<String> gamesList;
@@ -87,7 +85,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String gameId = gamesID.get(position); // Assuming gamesList contains document IDs
-                Intent intent = new Intent(Home.this, GameDetails.class);
+                Intent intent = new Intent(GameList.this, GameDetails.class);
                 intent.putExtra("gameId", gameId);
                 startActivity(intent);
             }
@@ -156,7 +154,7 @@ public class Home extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Home.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GameList.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

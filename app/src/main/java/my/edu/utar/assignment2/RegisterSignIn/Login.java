@@ -21,12 +21,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
-import my.edu.utar.assignment2.GameDetails;
-import my.edu.utar.assignment2.Home;
 import my.edu.utar.assignment2.MainActivity;
 import my.edu.utar.assignment2.ProfilePage.Profile;
 import my.edu.utar.assignment2.R;
-import my.edu.utar.assignment2.createGame.CreateGame;
 
 public class Login extends AppCompatActivity {
 

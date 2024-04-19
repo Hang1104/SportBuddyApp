@@ -39,7 +39,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import my.edu.utar.assignment2.Home;
+import my.edu.utar.assignment2.GameList;
 import my.edu.utar.assignment2.MainActivity;
 import my.edu.utar.assignment2.R;
 
@@ -315,7 +315,7 @@ public class CreateGame extends AppCompatActivity {
                         // Game successfully added to Firestore
                         Toast.makeText(CreateGame.this, "Game created successfully!", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(CreateGame.this, Home.class);
+                        Intent intent = new Intent(CreateGame.this, GameList.class);
                         startActivity(intent);
 
                         // Close the current activity
