@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,17 +32,23 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import my.edu.utar.assignment2.R;
 
 public class AddSport extends AppCompatActivity {
 
-    private EditText usernameEditText, locationEditText;
     private Spinner sportSpinner, skillLevelSpinner;
     private Button saveButton;
+    private ImageButton backButton;
     private FirebaseFirestore db;
+
+    // Declare allSports list
+    private List<String> allSports = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +59,66 @@ public class AddSport extends AppCompatActivity {
         sportSpinner = findViewById(R.id.sportSpinner);
         skillLevelSpinner = findViewById(R.id.skillLevelSpinner);
         saveButton = findViewById(R.id.saveButton);
+        backButton = findViewById(R.id.returnButton);
 
-        // 设置运动类型和技能水平的 Spinner
-        ArrayAdapter<CharSequence> sportAdapter = ArrayAdapter.createFromResource(this,
-                R.array.sports, android.R.layout.simple_spinner_item);
-        sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sportSpinner.setAdapter(sportAdapter);
+//        //sport spinner
+//        ArrayAdapter<CharSequence> sportAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.sports, android.R.layout.simple_spinner_item);
+//        sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        sportSpinner.setAdapter(sportAdapter);
 
+        //skill level spinner
         ArrayAdapter<CharSequence> skillLevelAdapter = ArrayAdapter.createFromResource(this,
                 R.array.skill_levels, android.R.layout.simple_spinner_item);
         skillLevelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         skillLevelSpinner.setAdapter(skillLevelAdapter);
+
+        backButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                // Finish the current activity to go back to the previous page
+                finish();
+            }
+        });
+
+        // Get the current user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Create a reference to the "skill_levels" collection in Firestore
+        CollectionReference skillLevelsRef = FirebaseFirestore.getInstance().collection("skill_levels");
+        // Add all available sports to the list
+        List<String> allSports = new ArrayList<>();
+
+// Retrieve the document for the current user
+        skillLevelsRef.whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        // Create an array list to hold the sports
+                        ArrayList<String> sportsList = new ArrayList<>();
+
+                        // Add all available sports to the list
+                        sportsList.addAll(Arrays.asList(getResources().getStringArray(R.array.sports)));
+
+                        // If the document exists, retrieve the selected sport
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            String selectedSport = documentSnapshot.getString("selectedSport");
+                            sportsList.remove(selectedSport);
+                        }
+
+                        // Set up the sport spinner with the filtered list of sports
+                        ArrayAdapter<String> sportAdapter = new ArrayAdapter<>(AddSport.this, android.R.layout.simple_spinner_item, sportsList);
+                        sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        sportSpinner.setAdapter(sportAdapter);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error retrieving user data", e);
+                    }
+                });
 
         // click to save the info
         saveButton.setOnClickListener(new View.OnClickListener() {

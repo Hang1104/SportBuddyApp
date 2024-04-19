@@ -1,5 +1,7 @@
 package my.edu.utar.assignment2.ProfilePage;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -67,15 +69,16 @@ public class Profile extends AppCompatActivity {
     private static final int IMAGE_PICKER_REQUEST = 1;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private RecyclerView recyclerView, recyclerView2;
+    private RecyclerView recyclerView;
     private ResultAdapter mAdapter;
-    private static final int SPORT_SELECTION_REQUEST_CODE = 101;
 
+    private RecyclerView horizontalRecyclerView;
+    private HorizontalScrollAdapter adapter;
+    private List<String> itemList = new ArrayList<>();
 
-    TextView nameText, emailText, locationText;
-    ImageView editprofile;
+    TextView nameText, emailText, locationText, addButton;
     CircleImageView avatarImage;
-    Button addbutton;
+    Button EditButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,20 +93,26 @@ public class Profile extends AppCompatActivity {
         nameText = findViewById(R.id.nameText);
         emailText = findViewById(R.id.emailText);
         locationText = findViewById(R.id.locationText);
-        editprofile = findViewById(R.id.editIcon);
         avatarImage = findViewById(R.id.avatarImage);
-        addbutton = findViewById(R.id.addButton);
+        addButton = findViewById(R.id.addButton);
 
         //find game recycle view
         RecyclerView recyclerView = findViewById(R.id.gameRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        // Find Sport RecyclerView
-        recyclerView2 = findViewById(R.id.sportrecyclerView);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
-
         mAdapter = new ResultAdapter();
         recyclerView.setAdapter(mAdapter);
+
+        //Initialize the RecyclerView
+        RecyclerView horizontalRecyclerView = findViewById(R.id.horizontalRecyclerView);
+//        HorizontalScrollAdapter adapter = new HorizontalScrollAdapter(itemList, item -> {
+//            // Handle item click, e.g., open edit dialog
+//            Toast.makeText(this, "Edit " + item, Toast.LENGTH_SHORT).show();
+//        });
+
+        horizontalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new HorizontalScrollAdapter(itemList);
+        horizontalRecyclerView.setAdapter(adapter);
 
 
         //request location permission
@@ -113,14 +122,6 @@ public class Profile extends AppCompatActivity {
             startLocationUpdates();
         }
 
-        //navigate to edit profile
-        editprofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Profile.this, EditProfile.class);
-                startActivity(intent);
-            }
-        });
 
         //select new profile image
         avatarImage.setOnClickListener(new View.OnClickListener() {
@@ -140,20 +141,11 @@ public class Profile extends AppCompatActivity {
         loadSportInformation();
 
         // Add data for sport skill level
-        addbutton.setOnClickListener(new View.OnClickListener() {
-
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Profile.this, AddSport.class);
                 startActivity(intent);
-                finish();
-//                if (mAdapter.getItemCount() == 0) {
-//                    // Start SportSelectionActivity if RecyclerView is empty
-//                    startSportSelectionActivity();
-//                } else {
-//                    // Otherwise, add sample data
-////                    addSampleData();
-//                }
             }
         });
 
@@ -171,68 +163,34 @@ public class Profile extends AppCompatActivity {
         });
 
     }
-
-    // Start SportSelectionActivity
-//    private void startSportSelectionActivity() {
-//        Intent intent = new Intent(Profile.this, AddSport.class);
-//        startActivityForResult(intent, SPORT_SELECTION_REQUEST_CODE);
-//    }
-
-
-    // Save selected sport and skill level to Firebase database
-    private void saveSportDataToFirebase(String selectedSport, String selectedSkill) {
-        // Get the current user's ID
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        // Create a reference to the user's sport data in the database
-        DocumentReference userSportRef = db.collection("users").document(userId).collection("skillLevel").document();
-
-        // Create a data object with the selected sport and skill level
-        Map<String, Object> sportData = new HashMap<>();
-        sportData.put("sport", selectedSport);
-        sportData.put("skill", selectedSkill);
-
-        // Save the sport data to the database
-        userSportRef.set(sportData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Sport data saved successfully
-                        Toast.makeText(Profile.this, "Sport data saved successfully", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to save sport data
-                        Toast.makeText(Profile.this, "Failed to save sport data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
     private void loadSportInformation() {
-        db.collection("users").document(auth.getCurrentUser().getUid()).collection("sports")
+        // Assuming you have a 'items' collection in Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("skill_levels")
+                .whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<String> sports = new ArrayList<>();
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            String sport = documentSnapshot.getString("sport");
-                            String skill = documentSnapshot.getString("skill");
-                            sports.add("Sport: " + sport + ", Skill Level: " + skill);
-                        }
-                        // Update the RecyclerView with the sports list
-                        mAdapter.setSportList(sports);
-                        mAdapter.notifyDataSetChanged();
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // Clear the existing itemList
+                    itemList.clear();
+
+                    // Add each item from the Firestore query result to the itemList
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        String selectedSkillLevel = document.getString("selectedSkillLevel");
+                        String selectedSport = document.getString("selectedSport");
+                        itemList.add(selectedSport);
+                        itemList.add(selectedSkillLevel);
+                    }
+
+                    // Notify the adapter that the data set has changed
+                    adapter.notifyDataSetChanged();
+
+                    // If itemList is empty, add a placeholder item
+                    if (itemList.isEmpty()) {
+                        itemList.add("No data");
+                        adapter.notifyDataSetChanged();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("ProfileActivity", "Error getting sport information", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.d(TAG, "Error getting documents: ", e));
     }
 
     //load create game information
@@ -260,6 +218,7 @@ public class Profile extends AppCompatActivity {
                                         (String) data.get("sportType"),
                                         (String) data.get("gameSkill"),
                                         (String) data.get("location"),
+                                        (String) data.get("address"),
                                         date,
                                         (String) data.get("startTime"),
                                         (String) data.get("endTime"),
@@ -270,6 +229,7 @@ public class Profile extends AppCompatActivity {
                                         (String) data.get("sportType"),
                                         (String) data.get("gameSkill"),
                                         (String) data.get("location"),
+                                        (String) data.get("address"),
                                         date,
                                         (String) data.get("startTime"),
                                         (String) data.get("endTime"),
@@ -343,17 +303,6 @@ public class Profile extends AppCompatActivity {
         if (requestCode == IMAGE_PICKER_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
             uploadImageToFirebase(imageUri);
-        } else if (requestCode == SPORT_SELECTION_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                // Handle the selected sport and skill level data here
-                // For example:
-                String selectedSport = data.getStringExtra("selected_sport");
-                String selectedSkill = data.getStringExtra("selected_skill");
-                // Save the selected data to Firebase database
-                saveSportDataToFirebase(selectedSport, selectedSkill);
-            } else {
-                Toast.makeText(this, "Sport selection cancelled", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 

@@ -6,15 +6,17 @@ public class GameRecord {
     private String sportType;
     private String gameSkill;
     private String location;
+    private String address;
     private Date date;
     private String startTime;
     private String endTime;
     private boolean hasGameDatePassed;
 
-    public GameRecord(String sportType, String gameSkill, String location, Date date, String startTime, String endTime, boolean hasGameDatePassed) {
+    public GameRecord(String sportType, String gameSkill, String location, String address, Date date, String startTime, String endTime, boolean hasGameDatePassed) {
         this.sportType = sportType;
         this.gameSkill = gameSkill;
         this.location = location;
+        this.address = address;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -43,6 +45,14 @@ public class GameRecord {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getDate() {
