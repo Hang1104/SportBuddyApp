@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sports">
+        <item>Badminton</item>
         <item>Football</item>
         <item>Basketball</item>
         <item>Table Tennis</item>
         <item>Volleyball</item>
+        <item>Swimming</item>
+        <item>Futsal</item>
+        <item>Ping Pong</item>
+        <item>Gym</item>
+        <item>Bowling</item>
         <!-- Add more sports as needed -->
     </string-array>
 
