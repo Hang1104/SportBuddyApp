@@ -59,14 +59,22 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
         checkLocationPermission();
 
+        //location textView
+        TextView currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
+        currentLocationTextView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+//                Intent intent = new Intent(HomePage.this, locationInputView.class);
+//                startActivity(intent);
+            }
+        });
+
         //profile button
         ImageView profileImageView = findViewById(R.id.profileimageView);
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, ProfileActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomePage.this, Profile.class);
+                startActivity(intent);
             }
         });
 
@@ -78,7 +86,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
             public void onClick(View v) {
                 Intent intent = new Intent(HomePage.this, CreateGame.class);
                 startActivity(intent);
-                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -90,7 +97,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
             public void onClick(View v) {
                 Intent intent = new Intent(HomePage.this, GameList.class);
                 startActivity(intent);
-                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,10 +106,8 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         detailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an intent to start the GameDetailActivity
                 Intent intent = new Intent(HomePage.this, GameDetails.class);
                 startActivity(intent);
-                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -332,9 +336,4 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         }
         return initCapText.toString().trim();
     }
-
-
-//    public void onCurrentLocationClicked(View view) {
-//        // Redirect user to the location input page
-//    }
 }
