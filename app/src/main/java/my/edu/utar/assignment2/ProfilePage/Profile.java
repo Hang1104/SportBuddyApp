@@ -158,9 +158,10 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //home button
+        //Navigation Bar
+        // Navigation Bar
+// Home button
         ImageView homePageBtn = findViewById(R.id.homePageBtn);
-
         homePageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,21 +170,17 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //chat button
-        ImageView chatBtn = findViewById(R.id.chatBtn);
-
+// Chat button
+        ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
-//                startActivity(intent);
                 Toast.makeText(Profile.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //book button
+// Book button
         ImageView learnBtn = findViewById(R.id.learnBtn);
-
         learnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,9 +189,8 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //profile button below
+// Profile button
         ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
-
         ProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,17 +199,6 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //Community page
-        Button CommunityBtn = findViewById(R.id.Home_CommunityBtn);
-
-        CommunityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
-//                startActivity(intent);
-                Toast.makeText(Profile.this, "hi", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
     private void loadSportInformation() {
@@ -322,7 +307,7 @@ public class Profile extends AppCompatActivity {
                             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                                 Glide.with(Profile.this).load(profileImageUrl).into(avatarImage);
                             } else {
-                                Glide.with(Profile.this).load(R.drawable.profile_png).into(avatarImage);
+                                Glide.with(Profile.this).load(R.drawable.profile).into(avatarImage);
                             }
                         } else {
                             Log.d("ProfileActivity", "No such document");

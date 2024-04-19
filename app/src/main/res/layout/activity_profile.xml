@@ -245,62 +245,15 @@
     <!-- Navigation bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigationBar"
-        android:layout_width="408dp"
+        android:layout_width="match_parent"
         android:layout_height="66dp"
         android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/homePageBtn"
-            android:layout_width="48dp"
-            android:layout_height="40dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chatBtn"
-            app:layout_constraintHorizontal_bias="0.506"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/home" />
+        <include layout="@layout/bottom_navigation_bar" />
 
-        <ImageView
-            android:id="@+id/chatBtn"
-            android:layout_width="48dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="124dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/learnBtn"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/chat" />
-
-        <ImageView
-            android:id="@+id/learnBtn"
-            android:layout_width="48dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="204dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ProfileBtn"
-            app:layout_constraintHorizontal_bias="0.246"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.461"
-            app:srcCompat="@drawable/book" />
-
-        <ImageView
-            android:id="@+id/ProfileBtn"
-            android:layout_width="51dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="36dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/profile_png" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

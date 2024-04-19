@@ -242,7 +242,7 @@ public class GameDetails extends AppCompatActivity {
 
             // Load and display profile image using Picasso or any other image loading library
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile_png).into(playerProfileImageView);
+                Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(playerProfileImageView);
                 }
             }
             // Append a newline character after each username
@@ -307,7 +307,7 @@ public class GameDetails extends AppCompatActivity {
         hostNameTextView.setText(username);
         // Load profile image using Picasso or any other image loading library
         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-            Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile_png).into(hostProfileImageView);
+            Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(hostProfileImageView);
         }
     }
 
