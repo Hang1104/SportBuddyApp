@@ -16,14 +16,14 @@
 
         <TextView
             android:id="@+id/Home_currentLocationTextView"
-            android:layout_width="85dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="28dp"
+            android:layout_width="276dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:clickable="true"
             android:onClick="onCurrentLocationClicked"
             android:text="Location"
-            android:textSize="20sp"
+            android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,7 @@
     <ScrollView
         android:id="@+id/Home_scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="405dp"
+        android:layout_height="475dp"
         android:layout_marginBottom="29dp">
 
         <LinearLayout
@@ -63,10 +63,10 @@
                     android:id="@+id/Home_constraintLayout"
                     android:layout_width="314dp"
                     android:layout_height="91dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/roundedborder"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.67"
+                    app:layout_constraintHorizontal_bias="0.505"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -253,8 +253,10 @@
                     android:background="@drawable/roundedborder"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.51"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/CommunityTitle">
+                    app:layout_constraintTop_toBottomOf="@+id/CommunityTitle"
+                    app:layout_constraintVertical_bias="1.0">
 
                     <TextView
                         android:id="@+id/Home_textView5"
@@ -290,12 +292,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="66dp"
         android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Home_scrollView1"
-        app:layout_constraintBottom_toBottomOf="parent" >
+        app:layout_constraintTop_toBottomOf="@id/Home_scrollView1">
 
         <ImageView
             android:id="@+id/homePageBtn"
@@ -313,7 +315,7 @@
             android:id="@+id/chatBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="124dp"
+            android:layout_marginStart="135dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/learnBtn"
@@ -326,7 +328,7 @@
             android:id="@+id/learnBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="204dp"
+            android:layout_marginStart="230dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ProfileBtn"
