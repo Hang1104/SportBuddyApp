@@ -1,4 +1,4 @@
-package my.edu.utar.sportsbuddy;
+package my.edu.utar.assignment2.LearningPage;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,7 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+import my.edu.utar.assignment2.R;
+
+public class LearningPage extends AppCompatActivity {
 
     private GridView gridView;
     private List<Map<String, Object>> sports;
@@ -27,18 +29,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_learning_page);
 
         gridView = findViewById(R.id.gridView);
 
         // Define sports data
         sports = new ArrayList<>();
-        sports.add(createSport("Display Rating", R.drawable.tabletennis, DisplayRatingActivity.class, colors[4]));
+//        sports.add(createSport("Display Rating", R.drawable.tabletennis, DisplayRatingActivity.class, colors[4]));
         sports.add(createSport("Badminton", R.drawable.badminton, Badminton.class, colors[0]));
         sports.add(createSport("Volleyball", R.drawable.volleyball, Volleyball.class, colors[1]));
         sports.add(createSport("Basketball", R.drawable.basketball, Basketball.class, colors[2]));
         sports.add(createSport("Table Tennis", R.drawable.tabletennis, Tabletennis.class, colors[3]));
-        sports.add(createSport("Rating", R.drawable.tabletennis, RatingActivity.class, colors[4]));
+//        sports.add(createSport("Rating", R.drawable.tabletennis, RatingActivity.class, colors[4]));
 
         // Set adapter for the GridView
         SimpleAdapter adapter = new SimpleAdapter(this, sports,
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 Class<?> activityClass = (Class<?>) sports.get(position).get("activity");
 
                 // Start the activity
-                Intent intent = new Intent(MainActivity.this, activityClass);
+                Intent intent = new Intent(LearningPage.this, activityClass);
                 startActivity(intent);
             }
         });
