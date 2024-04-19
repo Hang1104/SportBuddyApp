@@ -24,15 +24,16 @@
             android:exported="false" />
         <activity
             android:name=".createGame.GameList"
-            android:exported="false"></activity>
-        <activity
-            android:name=".createGame.CreateGame"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".createGame.CreateGame"
+            android:exported="false">
         </activity>
         <activity
             android:name=".ProfilePage.AddSport"

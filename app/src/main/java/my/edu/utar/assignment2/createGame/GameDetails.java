@@ -46,6 +46,8 @@ public class GameDetails extends AppCompatActivity {
         String gameId = getIntent().getStringExtra("gameId");
         Log.d("GameId", "GameId: " + gameId);
 
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         // Find the ImageButton in the layout
         ImageButton backButton = findViewById(R.id.backButton);
         // Set onClick listener for the ImageButton
@@ -90,8 +92,6 @@ public class GameDetails extends AppCompatActivity {
             getHostDetails(gameId);
             getGameDetails(gameId, sportTypeTextView, locationTextView, addressTextView, dateTextView, startTimeTextView, endTimeTextView, gameSkillTextView);
 
-
-            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             isCurrentUserHost(gameId, currentUserId);
 
             displayJoinedPlayers(gameId);
@@ -313,41 +313,6 @@ public class GameDetails extends AppCompatActivity {
         }
     }
 
-    private void isCurrentUserHost(String gameId, String currentUserId) {
-        db.collection("createGame").document(gameId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            String hostId = documentSnapshot.getString("userId");
-                            // Check if the current user is the host
-                            if (currentUserId.equals(hostId)) {
-                                // Show the edit button and hide the join now button
-                                editButton.setVisibility(View.VISIBLE);
-                                joinNowButton.setVisibility(View.GONE);
-                                // Set onClick listener for the "Edit" button
-                                editButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Implement logic to edit the game details
-                                        // For example, you can start a new activity to edit the game details
-                                        Intent intent = new Intent(GameDetails.this, EditGameDetails.class);
-                                        intent.putExtra("gameId", gameId);
-                                        startActivity(intent);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("IsCurrentUserHost", "Error checking if current user is host", e);
-                    }
-                });
-    }
 
     private String toInitCap(String text) {
         if (text == null || text.isEmpty()) {
