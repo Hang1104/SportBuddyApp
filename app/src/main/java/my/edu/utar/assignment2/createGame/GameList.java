@@ -43,7 +43,7 @@ public class GameList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.game_list);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         gamesListView = findViewById(R.id.gamesListView);

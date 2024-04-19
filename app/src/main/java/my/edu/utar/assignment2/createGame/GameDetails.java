@@ -66,7 +66,6 @@ public class GameDetails extends AppCompatActivity {
         });
 
         Button joinNowButton = findViewById(R.id.joinNowButton);
-        Button editButton = findViewById(R.id.editButton);
 
         // Set onClick listener for the "Join Now" button
         joinNowButton.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +91,6 @@ public class GameDetails extends AppCompatActivity {
             getHostDetails(gameId);
             getGameDetails(gameId, sportTypeTextView, locationTextView, addressTextView, dateTextView, startTimeTextView, endTimeTextView, gameSkillTextView);
 
-            isCurrentUserHost(gameId, currentUserId);
 
             displayJoinedPlayers(gameId);
         }
@@ -244,7 +242,7 @@ public class GameDetails extends AppCompatActivity {
 
             // Load and display profile image using Picasso or any other image loading library
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(playerProfileImageView);
+                Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile_png).into(playerProfileImageView);
                 }
             }
             // Append a newline character after each username
@@ -309,7 +307,7 @@ public class GameDetails extends AppCompatActivity {
         hostNameTextView.setText(username);
         // Load profile image using Picasso or any other image loading library
         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-            Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(hostProfileImageView);
+            Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile_png).into(hostProfileImageView);
         }
     }
 

@@ -191,7 +191,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/profile_png" />
 
                 <!-- Host name TextView -->
                 <TextView
@@ -240,7 +240,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:outlineProvider="background"
-                        android:src="@drawable/profile"
+                        android:src="@drawable/profile_png"
                         android:layout_marginBottom="8dp" />
 
                 <!-- Host name TextView -->
