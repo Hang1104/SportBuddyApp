@@ -17,19 +17,10 @@ import my.edu.utar.assignment2.RegisterSignIn.Login;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
-    Button logoutButton;
-    TextView textView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(getApplicationContext(), Login.class);
-        startActivity(intent);
-        finish();
 
         ImageView iv = findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.buddylogo).into(iv);
