@@ -1,7 +1,7 @@
 package my.edu.utar.assignment2;
 
 
-// testing updateeee why not appear ?
+// testing updateeee why not appear ? again
 
 import android.content.Intent;
 import android.os.Bundle;
