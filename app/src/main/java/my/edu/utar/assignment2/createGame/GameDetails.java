@@ -44,7 +44,8 @@ public class GameDetails extends AppCompatActivity {
 
         // Retrieve gameId from intent
         String gameId = getIntent().getStringExtra("gameId");
-        Log.d("GameId", "GameId: " + gameId);
+
+        String latestGameId = getIntent().getStringExtra("latestGameId");
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

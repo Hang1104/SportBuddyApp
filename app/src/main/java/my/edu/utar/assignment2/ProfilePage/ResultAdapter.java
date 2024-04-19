@@ -1,5 +1,6 @@
 package my.edu.utar.assignment2.ProfilePage;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import my.edu.utar.assignment2.R;
+import my.edu.utar.assignment2.RatingPage;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
     private List<GameRecord> mData;
@@ -53,7 +55,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             holder.rankButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Navigate to ranking page
+                    // Navigate to RatingPage
+                    Intent intent = new Intent(v.getContext(), RatingPage.class);
+                    v.getContext().startActivity(intent);
                 }
             });
         } else {
