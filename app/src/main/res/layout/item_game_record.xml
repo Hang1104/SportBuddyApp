@@ -9,44 +9,57 @@
         android:id="@+id/sportTypeTextView"
         android:layout_width="378dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/gameSkillTextView"
         android:layout_width="378dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/locationTextView"
         android:layout_width="378dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="378dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="377dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/startTimeTextView"
         android:layout_width="378dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/endTimeTextView"
         android:layout_width="378dp"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="16sp"
+        android:padding="8dp" />
 
     <Button
         android:id="@+id/rankButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ranking"
+        android:text="Rating"
         android:visibility="gone"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
