@@ -1,4 +1,4 @@
-package my.edu.utar.assignment2;
+package my.edu.utar.assignment2.createGame;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +28,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import my.edu.utar.assignment2.R;
 
 public class GameList extends AppCompatActivity {
     private FirebaseFirestore db;

@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import my.edu.utar.assignment2.GameList;
 import my.edu.utar.assignment2.MainActivity;
 import my.edu.utar.assignment2.R;
 

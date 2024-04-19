@@ -17,17 +17,22 @@
         android:theme="@style/Theme.Assignment2"
         tools:targetApi="31">
         <activity
-            android:name=".GameDetails"
+            android:name=".createGame.EditGameDetails"
             android:exported="false" />
         <activity
-            android:name=".GameList"
+            android:name=".createGame.GameDetails"
+            android:exported="false" />
+        <activity
+            android:name=".createGame.GameList"
+            android:exported="false"></activity>
+        <activity
+            android:name=".createGame.CreateGame"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ProfilePage.AddSport"
@@ -36,12 +41,11 @@
             android:name=".RatingPage"
             android:exported="false" />
         <activity
-            android:name=".ProfilePage.EditProfile"
+            android:name=".ProfilePage.GameRecord"
             android:exported="false" />
         <activity
             android:name=".ProfilePage.Profile"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".RegisterSignIn.ResetPassword"
             android:exported="false" />
@@ -55,27 +59,23 @@
             android:name=".RegisterSignIn.Login"
             android:exported="false" />
         <activity
-            android:name=".createGame.CreateGame"
-            android:exported="false"/>
-
-        <activity android:name=".LearningPage.LearningPage"
-            android:exported="false"/>
-        <activity android:name=".LearningPage.Badminton"
-            android:exported="false"/>
-        <activity android:name=".LearningPage.Volleyball"
-            android:exported="false"/>
-        <activity android:name=".LearningPage.Tabletennis"
-            android:exported="false"/>
-        <activity android:name=".LearningPage.Basketball"
-            android:exported="false">
-
-
-        </activity>
+            android:name=".LearningPage.LearningPage"
+            android:exported="false" />
+        <activity
+            android:name=".LearningPage.Badminton"
+            android:exported="false" />
+        <activity
+            android:name=".LearningPage.Volleyball"
+            android:exported="false" />
+        <activity
+            android:name=".LearningPage.Tabletennis"
+            android:exported="false" />
+        <activity
+            android:name=".LearningPage.Basketball"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>

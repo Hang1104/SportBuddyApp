@@ -1,4 +1,4 @@
-package my.edu.utar.assignment2;
+package my.edu.utar.assignment2.createGame;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,10 +27,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import my.edu.utar.assignment2.R;
+
 public class GameDetails extends AppCompatActivity {
     private FirebaseFirestore db;
-    private String gameId;
 
+    private String gameId;
+    private Button joinNowButton;
+    private Button editButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,7 @@ public class GameDetails extends AppCompatActivity {
         });
 
         Button joinNowButton = findViewById(R.id.joinNowButton);
+        Button editButton = findViewById(R.id.editButton);
 
         // Set onClick listener for the "Join Now" button
         joinNowButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +89,10 @@ public class GameDetails extends AppCompatActivity {
         if (gameId != null) {
             getHostDetails(gameId);
             getGameDetails(gameId, sportTypeTextView, locationTextView, addressTextView, dateTextView, startTimeTextView, endTimeTextView, gameSkillTextView);
+
+
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            isCurrentUserHost(gameId, currentUserId);
 
             displayJoinedPlayers(gameId);
         }
@@ -302,6 +311,42 @@ public class GameDetails extends AppCompatActivity {
         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
             Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(hostProfileImageView);
         }
+    }
+
+    private void isCurrentUserHost(String gameId, String currentUserId) {
+        db.collection("createGame").document(gameId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String hostId = documentSnapshot.getString("userId");
+                            // Check if the current user is the host
+                            if (currentUserId.equals(hostId)) {
+                                // Show the edit button and hide the join now button
+                                editButton.setVisibility(View.VISIBLE);
+                                joinNowButton.setVisibility(View.GONE);
+                                // Set onClick listener for the "Edit" button
+                                editButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        // Implement logic to edit the game details
+                                        // For example, you can start a new activity to edit the game details
+                                        Intent intent = new Intent(GameDetails.this, EditGameDetails.class);
+                                        intent.putExtra("gameId", gameId);
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("IsCurrentUserHost", "Error checking if current user is host", e);
+                    }
+                });
     }
 
     private String toInitCap(String text) {
