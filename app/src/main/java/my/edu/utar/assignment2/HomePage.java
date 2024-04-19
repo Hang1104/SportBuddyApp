@@ -246,7 +246,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (!queryDocumentSnapshots.isEmpty()) {
-                            // There is at least one document, which is the latest created game
                             DocumentSnapshot latestGameSnapshot = queryDocumentSnapshots.getDocuments().get(0);
 
                             // Retrieve details of the latest game
