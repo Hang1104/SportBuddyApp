@@ -56,6 +56,17 @@
             android:exported="false" />
         <activity
             android:name=".createGame.CreateGame"
+            android:exported="false"/>
+
+        <activity android:name=".LearningPage.LearningPage"
+            android:exported="false"/>
+        <activity android:name=".LearningPage.Badminton"
+            android:exported="false"/>
+        <activity android:name=".LearningPage.Volleyball"
+            android:exported="false"/>
+        <activity android:name=".LearningPage.Tabletennis"
+            android:exported="false"/>
+        <activity android:name=".LearningPage.Basketball"
             android:exported="false">
 
 
