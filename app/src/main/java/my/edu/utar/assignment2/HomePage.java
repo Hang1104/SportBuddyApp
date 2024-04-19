@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import my.edu.utar.assignment2.LearningPage.LearningPage;
+import my.edu.utar.assignment2.ProfilePage.Profile;
+
 import my.edu.utar.assignment2.createGame.CreateGame;
 import my.edu.utar.assignment2.createGame.Game;
 import my.edu.utar.assignment2.createGame.GameDetails;
@@ -51,8 +54,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
-        db = FirebaseFirestore.getInstance();
 
         //location
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
@@ -135,9 +136,8 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         learnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, LearningPage.class);
+                startActivity(intent);
             }
         });
 
@@ -147,9 +147,8 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         ProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, Profile.class);
+                startActivity(intent);
             }
         });
 
@@ -166,20 +165,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         });
 
         fetchLatestGame();
-
-//        // Retrieve top game details from intent
-//        Game topGame = (Game) getIntent().getSerializableExtra("topGame");
-//
-//        // Display top game details
-//        if (topGame != null) {
-//            TextView sporttype = findViewById(R.id.sporttype);
-//            sporttype.setText(topGame.getSportType());
-//
-//            TextView Location = findViewById(R.id.Location);
-//            Location.setText(topGame.getLocation());
-//
-//            // Repeat the above process for other attributes like address, date, startTime, endTime, gameSkill, userId, createdTime
-//        }
     }
 
 

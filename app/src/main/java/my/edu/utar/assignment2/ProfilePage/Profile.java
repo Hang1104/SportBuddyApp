@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +52,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.LearningPage.LearningPage;
 import my.edu.utar.assignment2.R;
 import my.edu.utar.assignment2.RegisterSignIn.Login;
 
@@ -152,6 +155,63 @@ public class Profile extends AppCompatActivity {
                 Intent intent = new Intent(Profile.this, Login.class);
                 startActivity(intent);
                 finish(); // Close the current activity to prevent going back to it using the back button
+            }
+        });
+
+        //home button
+        ImageView homePageBtn = findViewById(R.id.homePageBtn);
+
+        homePageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
+        //chat button
+        ImageView chatBtn = findViewById(R.id.chatBtn);
+
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
+//                startActivity(intent);
+                Toast.makeText(Profile.this, "hi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //book button
+        ImageView learnBtn = findViewById(R.id.learnBtn);
+
+        learnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, LearningPage.class);
+                startActivity(intent);
+            }
+        });
+
+        //profile button below
+        ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
+
+        ProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
+        //Community page
+        Button CommunityBtn = findViewById(R.id.Home_CommunityBtn);
+
+        CommunityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
+//                startActivity(intent);
+                Toast.makeText(Profile.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -408,6 +468,4 @@ public class Profile extends AppCompatActivity {
             locationManager.removeUpdates(locationListener);
         }
     }
-
-
 }
