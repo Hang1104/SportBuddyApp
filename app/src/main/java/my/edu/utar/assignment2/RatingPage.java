@@ -16,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import my.edu.utar.assignment2.R;
 
@@ -27,6 +29,10 @@ public class RatingPage extends AppCompatActivity {
     private int rating = 0;
     private FirebaseAuth auth;
     private DatabaseReference ratingRef;
+    private FirebaseFirestore db;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +44,13 @@ public class RatingPage extends AppCompatActivity {
         Button submitButton = findViewById(R.id.submitButton);
         Button cancelButton = findViewById(R.id.cancelButton);
 
+        FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         ratingRef = FirebaseDatabase.getInstance().getReference("rating");
+
+
+
 
         // Add star icons dynamically
         for (int i = 0; i < 5; i++) {
@@ -67,6 +78,7 @@ public class RatingPage extends AppCompatActivity {
                 // Process the review (e.g., submit to server)
                 saveRatingAndReview(rating, review);
                 showToast("Review submitted: " + review);
+                finish();
             }
         });
 
@@ -92,35 +104,20 @@ public class RatingPage extends AppCompatActivity {
     }
 
     private void saveRatingAndReview(int rating, String review) {
-        // Save the rating and review to Firebase under the "ratings" collection
-
+        // Save the rating and review to Firestore under a "ratings" collection
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ratingCollectionRef = ratingRef.child("rating");
-        DatabaseReference userRatingRef = ratingCollectionRef.push();
-
-        userRatingRef.child("userId").setValue(userId)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // Data saved successfully
-                            // Add further processing here if needed
-                        } else {
-                            // Handle failed database operation
-                            Log.e("Firebase", "Error saving data: " + task.getException().getMessage());
-                        }
-                    }
+        db.collection("ratings")
+                .add(new Rating(userId, rating, review))
+                .addOnSuccessListener(documentReference -> {
+                    // Data saved successfully
+                    Log.d("Firestore", "Rating and review saved with ID: " + documentReference.getId());
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle failure
-                        Log.e("Firebase", "Error saving data: " + e.getMessage());
-                    }
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                    Log.e("Firestore", "Error saving data: " + e.getMessage());
                 });
-        userRatingRef.child("rating").setValue(rating); // Save rating as an integer
-        userRatingRef.child("review").setValue(review);
     }
+
 
 
     private void showToast(String message) {

@@ -1,5 +1,6 @@
 package my.edu.utar.assignment2.ProfilePage;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import my.edu.utar.assignment2.R;
+import my.edu.utar.assignment2.RatingPage;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
     private List<GameRecord> mData;
@@ -49,15 +51,16 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
 
         if (record.hasGameDatePassed()) {
-            holder.rankButton.setVisibility(View.VISIBLE);
-            holder.rankButton.setOnClickListener(new View.OnClickListener() {
+            holder.rateButton.setVisibility(View.VISIBLE);
+            holder.rateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Navigate to ranking page
+                    Intent intent = new Intent(v.getContext(), RatingPage.class);
+                    v.getContext().startActivity(intent);
                 }
             });
         } else {
-            holder.rankButton.setVisibility(View.GONE);
+            holder.rateButton.setVisibility(View.GONE);
         }
     }
 
@@ -73,7 +76,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         TextView dateTextView;
         TextView startTimeTextView;
         TextView endTimeTextView;
-        Button rankButton;
+        Button rateButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,7 +86,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             dateTextView = itemView.findViewById(R.id.dateTextView);
             startTimeTextView = itemView.findViewById(R.id.startTimeTextView);
             endTimeTextView = itemView.findViewById(R.id.endTimeTextView);
-            rankButton = itemView.findViewById(R.id.rankButton);
+            rateButton = itemView.findViewById(R.id.rateButton);
         }
     }
 }
