@@ -49,11 +49,15 @@ public class HomePage extends AppCompatActivity implements LocationListener {
     private String currentLocationName;
     private TextView currentLocationTextView;
     private FirebaseFirestore db;
+    private String latestGameId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        db = FirebaseFirestore.getInstance();
 
         //location
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
@@ -102,6 +106,7 @@ public class HomePage extends AppCompatActivity implements LocationListener {
             public void onClick(View v) {
                 // Create an intent to start the GameDetailActivity
                 Intent intent = new Intent(HomePage.this, GameDetails.class);
+                intent.putExtra("gameId", latestGameId);
                 startActivity(intent);
                 //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
@@ -249,6 +254,7 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                             DocumentSnapshot latestGameSnapshot = queryDocumentSnapshots.getDocuments().get(0);
 
                             // Retrieve details of the latest game
+                            String gameId = latestGameSnapshot.getId();
                             String sportType = latestGameSnapshot.getString("sportType");
                             String location = latestGameSnapshot.getString("location");
                             String address = latestGameSnapshot.getString("address");
@@ -269,13 +275,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                                                 String profileImageUrl = documentSnapshot.getString("profileImageUrl");
                                                 String initCapLocation = toInitCap(location);
 
-                                                // Construct game details string
-                                                String gameDetails = username + "\n" + "\n" +
-                                                        sportType + "\n" +
-                                                        initCapLocation + "\n" +
-                                                        date + ", " + startTime + " - " + endTime + "\n" +
-                                                        gameSkill;
-
                                                 // Set the game details in a TextView
                                                 TextView sporttype = findViewById(R.id.sporttype);
                                                 sporttype.setText(sportType);
@@ -291,6 +290,9 @@ public class HomePage extends AppCompatActivity implements LocationListener {
 
                                                 ShapeableImageView Home_GamePic = findViewById(R.id.Home_GamePic);
                                                 Picasso.get().load(profileImageUrl).into(Home_GamePic);
+
+
+                                                latestGameId = gameId;
 
 
                                             } else {
