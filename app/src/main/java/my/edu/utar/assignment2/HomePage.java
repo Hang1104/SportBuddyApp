@@ -22,20 +22,37 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import my.edu.utar.assignment2.createGame.CreateGame;
+import my.edu.utar.assignment2.createGame.Game;
+import my.edu.utar.assignment2.createGame.GameDetails;
+import my.edu.utar.assignment2.createGame.GameList;
 
 public class HomePage extends AppCompatActivity implements LocationListener {
     private static final int REQUEST_LOCATION_PERMISSION = 100;
     private LocationManager locationManager;
     private String currentLocationName;
     private TextView currentLocationTextView;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        db = FirebaseFirestore.getInstance();
 
         //location
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
@@ -58,9 +75,9 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, CreateGame.class);
+                startActivity(intent);
+                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -70,9 +87,9 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         showAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, ShowAllActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, GameList.class);
+                startActivity(intent);
+                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -83,9 +100,9 @@ public class HomePage extends AppCompatActivity implements LocationListener {
             @Override
             public void onClick(View v) {
                 // Create an intent to start the GameDetailActivity
-//                Intent intent = new Intent(HomePage.this, GameDetailActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, GameDetails.class);
+                startActivity(intent);
+                //Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -147,6 +164,22 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                 Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
+
+        fetchLatestGame();
+
+//        // Retrieve top game details from intent
+//        Game topGame = (Game) getIntent().getSerializableExtra("topGame");
+//
+//        // Display top game details
+//        if (topGame != null) {
+//            TextView sporttype = findViewById(R.id.sporttype);
+//            sporttype.setText(topGame.getSportType());
+//
+//            TextView Location = findViewById(R.id.Location);
+//            Location.setText(topGame.getLocation());
+//
+//            // Repeat the above process for other attributes like address, date, startTime, endTime, gameSkill, userId, createdTime
+//        }
     }
 
 
@@ -217,6 +250,103 @@ public class HomePage extends AppCompatActivity implements LocationListener {
     private void updateLocationUI(String locationName) {
         currentLocationTextView.setText(getString(R.string.current_location, locationName));
         Log.d("Location", "Current location: " + locationName);
+    }
+
+    private void fetchLatestGame() {
+        db.collection("createGame")
+                .orderBy("createdTime", Query.Direction.DESCENDING)
+                .limit(1) // Limit the query to retrieve only one document
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // There is at least one document, which is the latest created game
+                            DocumentSnapshot latestGameSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+
+                            // Retrieve details of the latest game
+                            String sportType = latestGameSnapshot.getString("sportType");
+                            String location = latestGameSnapshot.getString("location");
+                            String address = latestGameSnapshot.getString("address");
+                            String date = latestGameSnapshot.getString("date");
+                            String startTime = latestGameSnapshot.getString("startTime");
+                            String endTime = latestGameSnapshot.getString("endTime");
+                            String gameSkill = latestGameSnapshot.getString("gameSkill");
+                            String userId = latestGameSnapshot.getString("userId");
+
+                            // Fetch username from 'users' collection
+                            db.collection("users").document(userId)
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            if (documentSnapshot.exists()) {
+                                                String username = documentSnapshot.getString("username");
+                                                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                                                String initCapLocation = toInitCap(location);
+
+                                                // Construct game details string
+                                                String gameDetails = username + "\n" + "\n" +
+                                                        sportType + "\n" +
+                                                        initCapLocation + "\n" +
+                                                        date + ", " + startTime + " - " + endTime + "\n" +
+                                                        gameSkill;
+
+                                                // Set the game details in a TextView
+                                                TextView sporttype = findViewById(R.id.sporttype);
+                                                sporttype.setText(sportType);
+
+                                                TextView Date = findViewById(R.id.Date);
+                                                Date.setText(date);
+
+                                                TextView Location = findViewById(R.id.Location);
+                                                Location.setText(initCapLocation);
+
+                                                TextView gameskill = findViewById(R.id.gameskill);
+                                                gameskill.setText(gameSkill);
+
+                                                ShapeableImageView Home_GamePic = findViewById(R.id.Home_GamePic);
+                                                Picasso.get().load(profileImageUrl).into(Home_GamePic);
+
+
+                                            } else {
+                                                Log.d("fetchLatestGame", "User document does not exist");
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("fetchLatestGame", "Error getting user document", e);
+                                        }
+                                    });
+                        } else {
+                            Log.d("fetchLatestGame", "No games found");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(HomePage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private String toInitCap(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        // Split the text by space and capitalize each word
+        String[] words = text.toLowerCase().split("\\s");
+        StringBuilder initCapText = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                initCapText.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+            }
+        }
+        return initCapText.toString().trim();
     }
 
 

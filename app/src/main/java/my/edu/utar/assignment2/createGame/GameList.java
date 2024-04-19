@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import my.edu.utar.assignment2.HomePage;
 import my.edu.utar.assignment2.R;
 
 public class GameList extends AppCompatActivity {
@@ -49,10 +50,6 @@ public class GameList extends AppCompatActivity {
         gamesListView = findViewById(R.id.gamesListView);
         gamesList = new ArrayList<>();
         gamesID = new ArrayList<>();
-
-//        adapter = new ArrayAdapter<>(this, R.layout.list_item_game, R.id.gameDetailsTextView, gamesList);
-//        gamesListView.setAdapter(adapter);
-
         profileImageUrls = new ArrayList<>();
 
         // Initialize adapter
@@ -92,6 +89,7 @@ public class GameList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         fetchGamesList();
     }
 
@@ -132,12 +130,10 @@ public class GameList extends AppCompatActivity {
                                                         sportType + "\n" +
                                                         initCapLocation + "\n" +
                                                         date + ", " + startTime + " - " + endTime + "\n" +
-                                                        gameSkill
-                                                ;
+                                                        gameSkill;
 
                                                 gamesList.add(gameDetails);
                                                 gamesID.add(gameId);
-
                                                 adapter.notifyDataSetChanged();
                                             } else {
                                                 Log.d("fetchGamesList", "User document does not exist");

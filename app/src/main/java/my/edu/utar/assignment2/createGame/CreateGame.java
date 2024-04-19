@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import my.edu.utar.assignment2.HomePage;
 import my.edu.utar.assignment2.MainActivity;
 import my.edu.utar.assignment2.R;
 
@@ -84,7 +85,7 @@ public class CreateGame extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateGame.this, MainActivity.class);
+                Intent intent = new Intent(CreateGame.this, HomePage.class);
                 startActivity(intent);
                 finish();
             }

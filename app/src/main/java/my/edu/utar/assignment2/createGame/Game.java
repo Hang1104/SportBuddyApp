@@ -1,6 +1,6 @@
 package my.edu.utar.assignment2.createGame;
 
-import java.sql.Time;
+import java.io.Serializable;
 
 public class Game {
     private String sportType;
