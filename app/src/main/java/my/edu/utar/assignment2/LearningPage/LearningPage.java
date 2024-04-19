@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import my.edu.utar.assignment2.R;
+import my.edu.utar.assignment2.RatingPage;
 
 public class LearningPage extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class LearningPage extends AppCompatActivity {
         sports.add(createSport("Volleyball", R.drawable.volleyball, Volleyball.class, colors[1]));
         sports.add(createSport("Basketball", R.drawable.basketball, Basketball.class, colors[2]));
         sports.add(createSport("Table Tennis", R.drawable.tabletennis, Tabletennis.class, colors[3]));
-//        sports.add(createSport("Rating", R.drawable.tabletennis, RatingActivity.class, colors[4]));
+        sports.add(createSport("Rating", R.drawable.tabletennis, RatingPage.class, colors[4]));
 
         // Set adapter for the GridView
         SimpleAdapter adapter = new SimpleAdapter(this, sports,
