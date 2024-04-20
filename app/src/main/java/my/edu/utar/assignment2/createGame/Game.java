@@ -12,6 +12,7 @@ public class Game {
     private String gameSkill;
     private String userId;
     private long createdTime;
+    private int maxPlayers;
 
     // Default constructor (required by Firebase Firestore)
     public Game() {
@@ -19,7 +20,7 @@ public class Game {
     }
 
     // Constructor
-    public Game(String sportType, String location, String address, String date, String startTime, String endTime, String gameSkill, String userId, long createdTime) {
+    public Game(String sportType, String location, String address, String date, String startTime, String endTime, String gameSkill, String userId, long createdTime, int maxPlayers) {
         this.sportType = sportType;
         this.location = location;
         this.address = address;
@@ -29,9 +30,17 @@ public class Game {
         this.gameSkill = gameSkill;
         this.userId = userId;
         this.createdTime = createdTime;
+        this.maxPlayers = maxPlayers;
     }
 
     // Getters and setters
+    public Integer getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(Integer maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
     public String getUserId() {
         return userId;
     }

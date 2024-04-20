@@ -112,6 +112,7 @@ public class GameList extends AppCompatActivity {
                             String endTime = document.getString("endTime");
                             String gameSkill = document.getString("gameSkill");
                             String userId = document.getString("userId");
+                            String maxPlayers = String.valueOf(document.getLong("maxPlayers"));
 
                             // Fetch username from 'users' collection
                             db.collection("users").document(userId)
@@ -130,7 +131,8 @@ public class GameList extends AppCompatActivity {
                                                         sportType + "\n" +
                                                         initCapLocation + "\n" +
                                                         date + ", " + startTime + " - " + endTime + "\n" +
-                                                        gameSkill;
+                                                        gameSkill + "\n" +
+                                                        "Max Players: " + maxPlayers;
 
                                                 gamesList.add(gameDetails);
                                                 gamesID.add(gameId);

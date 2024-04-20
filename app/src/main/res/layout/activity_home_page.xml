@@ -157,33 +157,61 @@
                         android:id="@+id/sporttype"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="40dp"
                         android:layout_marginTop="24dp"
                         android:text="Sports Type"
-                        app:layout_constraintEnd_toStartOf="@+id/gameformat"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/joinedParticipants"/>
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/gameformat"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Game Format"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:layout_constraintVertical_bias="0.109" />-->
+
+                    <TextView
+                        android:id="@+id/joinedParticipants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="115dp"
+                        android:layout_marginTop="24dp"
+                        android:text="1"
+                        app:layout_constraintStart_toEndOf="@+id/sporttype"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/gameformat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Game Format"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.109" />
-
-                    <TextView
-                        android:id="@+id/participants"
+                        android:id="@+id/slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="1/10 Going"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/gameformat"
+                        android:text="/"
+                        app:layout_constraintStart_toEndOf="@+id/joinedParticipants"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/maxPlayers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="10"
+                        app:layout_constraintStart_toEndOf="@+id/slash"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/participantsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="40dp"
+                        android:text=" Going"
+                        app:layout_constraintStart_toEndOf="@+id/maxPlayers"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView

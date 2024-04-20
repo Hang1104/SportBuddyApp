@@ -35,6 +35,7 @@ public class GameDetails extends AppCompatActivity {
     private String gameId;
     private Button joinNowButton;
     private Button editButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,7 @@ public class GameDetails extends AppCompatActivity {
             }
         });
 
+
         Button joinNowButton = findViewById(R.id.joinNowButton);
 
         // Set onClick listener for the "Join Now" button
@@ -92,7 +94,6 @@ public class GameDetails extends AppCompatActivity {
             getHostDetails(gameId);
             getGameDetails(gameId, sportTypeTextView, locationTextView, addressTextView, dateTextView, startTimeTextView, endTimeTextView, gameSkillTextView);
 
-
             displayJoinedPlayers(gameId);
         }
     }
@@ -112,19 +113,35 @@ public class GameDetails extends AppCompatActivity {
                     String endTime = documentSnapshot.getString("endTime");
                     String gameSkill = documentSnapshot.getString("gameSkill");
 
-                    String initCapLocation = toInitCap(location);
+                    // Fetch joined players count
+                    db.collection("createGame").document(gameId).collection("joinedPlayers")
+                            .get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    int joinedPlayersCount = queryDocumentSnapshots.size();
 
-                    // Update TextViews with game details
-                    sportTypeTextView.setText(sportType);
-                    locationTextView.setText(initCapLocation);
-                    addressTextView.setText(address);
-                    dateTextView.setText(date);
-                    startTimeTextView.setText(startTime);
-                    endTimeTextView.setText(endTime);
-                    gameSkillTextView.setText(gameSkill);
+                                    String initCapLocation = toInitCap(location);
 
-                    // Set sport type icon based on retrieved sport type
-                    setSportTypeIcon(sportType);
+                                    // Update TextViews with game details
+                                    sportTypeTextView.setText(sportType);
+                                    locationTextView.setText(initCapLocation);
+                                    addressTextView.setText(address);
+                                    dateTextView.setText(date);
+                                    startTimeTextView.setText(startTime);
+                                    endTimeTextView.setText(endTime);
+                                    gameSkillTextView.setText(gameSkill);
+
+                                    // Set sport type icon based on retrieved sport type
+                                    setSportTypeIcon(sportType);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("GetGameDetails", "Error getting joined players count", e);
+                                }
+                            });
                 } else {
                     // Handle case when document does not exist
                     Log.d("GetGameDetails", "No such document");
@@ -185,6 +202,7 @@ public class GameDetails extends AppCompatActivity {
                         // Display the list of joined players in the UI
                         // Update UI to display usernames and profile images
                         updateJoinedPlayersUI(joinedPlayersList, profileImageUrls);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -196,7 +214,8 @@ public class GameDetails extends AppCompatActivity {
                     }
                 });
     }
-//
+
+    //
     private void fetchPlayerInfo(String userId, List<String> joinedPlayersList, List<String> profileImageUrls) {
         // Fetch player information from Firestore based on user ID
         db.collection("users").document(userId)
@@ -226,6 +245,7 @@ public class GameDetails extends AppCompatActivity {
                     }
                 });
     }
+
     private void updateJoinedPlayersUI(List<String> joinedPlayersList, List<String> profileImageUrls) {
         // Update the UI to display the list of joined players with usernames and profile images
         // You can use RecyclerView or other UI components to display a list of players with their profile images
@@ -244,12 +264,11 @@ public class GameDetails extends AppCompatActivity {
             // Load and display profile image using Picasso or any other image loading library
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                 Picasso.get().load(profileImageUrl).placeholder(R.drawable.profile).into(playerProfileImageView);
-                }
             }
-            // Append a newline character after each username
-            joinedPlayersTextView.append("\n");
         }
-
+        // Append a newline character after each username
+        joinedPlayersTextView.append("\n");
+    }
 
 
     // Method to get host details

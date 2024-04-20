@@ -141,6 +141,13 @@ public class CreateGame extends AppCompatActivity {
                 createGame();
             }
         });
+
+//        EditText maxPlayersEditText = findViewById(R.id.maxPlayersEditText);
+//        // Get the maximum number of players from the EditText
+//        String maxPlayersStr = maxPlayersEditText.getText().toString();
+//
+//        // Convert the string to an integer (assuming the input is valid)
+//        int maxPlayers = Integer.parseInt(maxPlayersStr);
     }
 
     private void initializeLocationListener() {
@@ -275,6 +282,7 @@ public class CreateGame extends AppCompatActivity {
         Spinner endHourSpinner = findViewById(R.id.endHourSpinner);
         Spinner endAmPmSpinner = findViewById(R.id.endAmPmSpinner);
         Spinner skillLevelSpinner = findViewById(R.id.skillLevelSpinner);
+        EditText maxPlayersEditText = findViewById(R.id.maxPlayersEditText);
 
         String sportType = sportSpinner.getSelectedItem().toString();
         String location = locationEditText.getText().toString();
@@ -283,11 +291,12 @@ public class CreateGame extends AppCompatActivity {
         String startTime = startHourSpinner.getSelectedItem().toString() + " " + startAmPmSpinner.getSelectedItem().toString();
         String endTime = endHourSpinner.getSelectedItem().toString() + " " + endAmPmSpinner.getSelectedItem().toString();
         String gameSkill = skillLevelSpinner.getSelectedItem().toString();
+        String maxPlayersStr = maxPlayersEditText.getText().toString();
 
-
+        int maxPlayers = Integer.parseInt(maxPlayersStr);
 
         // Check if any field is empty
-        if (sportType.isEmpty() || location.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || gameSkill.isEmpty()) {
+        if (sportType.isEmpty() || location.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || gameSkill.isEmpty() || maxPlayersStr.isEmpty()) {
             // Display a toast message indicating that all fields must be filled
             Toast.makeText(CreateGame.this, "Please fill in all sections to create the game", Toast.LENGTH_SHORT).show();
             return; // Stop the method execution
@@ -304,7 +313,7 @@ public class CreateGame extends AppCompatActivity {
 
         // Create a new game object
         //Game game = new Game(sportType, location, address, date, startTime, endTime, gameSkill, userId);
-        Game game = new Game(sportType, location, address, date, startTime, endTime, gameSkill, userId, currentTime);
+        Game game = new Game(sportType, location, address, date, startTime, endTime, gameSkill, userId, currentTime, maxPlayers);
 
         // Add the game object to Firestore
         db.collection("createGame")
