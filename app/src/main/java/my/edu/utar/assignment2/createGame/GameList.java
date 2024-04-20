@@ -55,6 +55,7 @@ public class GameList extends AppCompatActivity {
         gamesID = new ArrayList<>();
         profileImageUrls = new ArrayList<>();
 
+
         // Initialize adapter
         adapter = new ArrayAdapter<String>(this, R.layout.list_item_game, R.id.gameDetailsTextView, gamesList) {
             @NonNull
@@ -154,40 +155,45 @@ public class GameList extends AppCompatActivity {
                             String userId = document.getString("userId");
                             String maxPlayers = String.valueOf(document.getLong("maxPlayers"));
 
-                            // Fetch username from 'users' collection
-                            db.collection("users").document(userId)
-                                    .get()
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            if (documentSnapshot.exists()) {
-                                                String username = documentSnapshot.getString("username");
-                                                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-                                                String initCapLocation = toInitCap(location);
+                            String keyword = getIntent().getStringExtra("newLocation");
 
-                                                profileImageUrls.add(profileImageUrl);
+                            // Check if the location or address contains the keyword
+                            if (location.contains(keyword) || address.contains(keyword)) {
+                                // Fetch username from 'users' collection
+                                db.collection("users").document(userId)
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                if (documentSnapshot.exists()) {
+                                                    String username = documentSnapshot.getString("username");
+                                                    String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                                                    String initCapLocation = toInitCap(location);
 
-                                                String gameDetails = username + "\n" + "\n" +
-                                                        sportType + "\n" +
-                                                        initCapLocation + "\n" +
-                                                        date + ", " + startTime + " - " + endTime + "\n" +
-                                                        gameSkill + "\n" +
-                                                        "Max Players: " + maxPlayers;
+                                                    profileImageUrls.add(profileImageUrl);
 
-                                                gamesList.add(gameDetails);
-                                                gamesID.add(gameId);
-                                                adapter.notifyDataSetChanged();
-                                            } else {
-                                                Log.d("fetchGamesList", "User document does not exist");
+                                                    String gameDetails = username + "\n" + "\n" +
+                                                            sportType + "\n" +
+                                                            initCapLocation + "\n" +
+                                                            date + ", " + startTime + " - " + endTime + "\n" +
+                                                            gameSkill + "\n" +
+                                                            "Max Players: " + maxPlayers;
+
+                                                    gamesList.add(gameDetails);
+                                                    gamesID.add(gameId);
+                                                    adapter.notifyDataSetChanged();
+                                                } else {
+                                                    Log.d("fetchGamesList", "User document does not exist");
+                                                }
                                             }
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("fetchGamesList", "Error getting user document", e);
-                                        }
-                                    });
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.e("fetchGamesList", "Error getting user document", e);
+                                            }
+                                        });
+                            }
                         }
                     }
                 })
