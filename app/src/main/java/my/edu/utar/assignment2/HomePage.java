@@ -69,17 +69,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        //location
-        currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
-
-        //location button
-        ImageView locationBtn = findViewById(R.id.UseMapBtn);
-        locationBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(HomePage.this, LocationInputView.class);
-                startActivity(intent);
-            }
-        });
 
         //check location permission
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -95,6 +84,15 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         currentLocationTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 editLocation();
+            }
+        });
+
+        //location button
+        ImageView locationBtn = findViewById(R.id.UseMapBtn);
+        locationBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(HomePage.this, LocationInputView.class);
+                startActivity(intent);
             }
         });
 
