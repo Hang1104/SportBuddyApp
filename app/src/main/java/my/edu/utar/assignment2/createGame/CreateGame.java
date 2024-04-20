@@ -58,12 +58,16 @@ public class CreateGame extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private FirebaseAuth mAuth;
+    private TextView currentLocationTextView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
+
+        // Find the TextView
+        currentLocationTextView = findViewById(R.id.currentLocationTextView);
 
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
@@ -190,9 +194,12 @@ public class CreateGame extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                // Handle location change
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                // Handle location change if needed
+
+                // Update the TextView with the new location
+                currentLocationTextView.setText("Latitude: " + latitude + ", Longitude: " + longitude);
             }
 
             @Override
