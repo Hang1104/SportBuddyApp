@@ -70,6 +70,9 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         //location
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
 
+        //location button
+
+
         //check location permission
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
