@@ -60,6 +60,7 @@ public class HomePage extends AppCompatActivity implements LocationListener {
     private FirebaseAuth auth;
     private String latestGameId;
     private ShapeableImageView profileImageView;
+    private String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,17 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        //location
+        currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
+
+        //location button
+        ImageView locationBtn = findViewById(R.id.UseMapBtn);
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePage.this, LocationInputView.class);
+                startActivity(intent);
+            }
+        });
 
         //check location permission
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -84,15 +96,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         currentLocationTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 editLocation();
-            }
-        });
-
-        //location button
-        ImageView locationBtn = findViewById(R.id.UseMapBtn);
-        locationBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent intent = new Intent(HomePage.this, LocationInputView.class);
-                startActivity(intent);
             }
         });
 
@@ -148,11 +151,12 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         ImageView chatBtn = findViewById(R.id.chatBtn);
 
         chatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+               @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, ChatActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, CommunityActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -262,6 +266,167 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         Log.d("Location", "Current location: " + locationName);
     }
 
+
+    private String toInitCap(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        // Split the text by space and capitalize each word
+        String[] words = text.toLowerCase().split("\\s");
+        StringBuilder initCapText = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                initCapText.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+            }
+        }
+        return initCapText.toString().trim();
+    }
+
+
+    private void updateLocationText(Location location) {
+        Geocoder geocoder = new Geocoder(HomePage.this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null && addresses.size() > 0) {
+                String address = addresses.get(0).getAddressLine(0);
+                currentLocationTextView.setText(address);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editLocation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Location");
+
+        // Set up the layout for the dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_location, null);
+        builder.setView(dialogView);
+
+        // Get references to the EditText fields
+        EditText streetEditText = dialogView.findViewById(R.id.streetEditText);
+        EditText stateEditText = dialogView.findViewById(R.id.stateEditText);
+        EditText countryEditText = dialogView.findViewById(R.id.countryEditText);
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the text from the EditText fields
+                String street = streetEditText.getText().toString().trim();
+                String state = stateEditText.getText().toString().trim();
+                String country = countryEditText.getText().toString().trim();
+
+                // Create the full location string
+                String newLocation = street + ", " + state + ", " + country;
+
+                keyword = newLocation;
+
+                // Pass the new location to the GameList activity
+                Intent intent = new Intent(HomePage.this, GameList.class);
+                intent.putExtra("newLocation", newLocation);
+                startActivity(intent);
+
+                // Update the location text view
+                currentLocationTextView.setText(newLocation);
+
+                // Save the new location to Firestore
+                saveLocationToFirestore(newLocation);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+
+    //save Location to Firestore
+    private void saveLocationToFirestore(String location) {
+        db.collection("users").document(auth.getCurrentUser().getUid())
+                .update("location", location)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        currentLocationName = location;
+                        updateLocationUI(currentLocationName); // Update the UI to display the newly saved location
+                        Log.d("saveLocationToFirestore", "Location updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("saveLocationToFirestore", "Error updating location", e);
+                    }
+                });
+    }
+
+    //load location of user from firestore
+    private void loadUserLocation() {
+        db.collection("users").document(auth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String location = documentSnapshot.getString("location");
+                            if (location != null && !location.isEmpty()) {
+                                currentLocationName = location;
+                                updateLocationUI(currentLocationName);
+                            }
+                        } else {
+                            Log.d("HomePage", "User document does not exist");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("HomePage", "Error getting user document", e);
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserLocation(); // Load user's location when the activity is resumed
+    }
+
+
+    //load profile image
+    private void loadProfileImage() {
+
+        db.collection("users").document(auth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+
+                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                Glide.with(HomePage.this).load(profileImageUrl).into(profileImageView);
+                            } else {
+                                Glide.with(HomePage.this).load(R.drawable.profile).into(profileImageView);
+                            }
+                        } else {
+                            Log.d("HomeActivity", "No such document");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("HomeActivity", "Error getting document", e);
+                    }
+                });
+    }
+
     private void fetchLatestGame() {
         db.collection("createGame")
                 .orderBy("createdTime", Query.Direction.DESCENDING)
@@ -285,7 +450,6 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                             String userId = latestGameSnapshot.getString("userId");
                             String maxPlayers = String.valueOf(latestGameSnapshot.getLong("maxPlayers"));
 
-                            // Fetch joined players count
                             db.collection("createGame").document(gameId).collection("joinedPlayers")
                                     .get()
                                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -293,227 +457,64 @@ public class HomePage extends AppCompatActivity implements LocationListener {
                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                             int joinedPlayersCount = queryDocumentSnapshots.size();
 
-                                            // Fetch username from 'users' collection
-                                            db.collection("users").document(userId)
-                                                    .get()
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                // Fetch username from 'users' collection
+                                                db.collection("users").document(userId)
+                                                        .get()
+                                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                                if (documentSnapshot.exists()) {
+                                                                    String username = documentSnapshot.getString("username");
+                                                                    String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                                                                    String initCapLocation = toInitCap(location);
 
-                                                            if (documentSnapshot.exists()) {
-                                                                String username = documentSnapshot.getString("username");
-                                                                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-                                                                String initCapLocation = toInitCap(location);
+                                                                    // Set the game details in a TextView
+                                                                    TextView sporttype = findViewById(R.id.sporttype);
+                                                                    sporttype.setText(sportType);
 
-                                                                // Set the game details in a TextView
-                                                                TextView sporttype = findViewById(R.id.sporttype);
-                                                                sporttype.setText(sportType);
+                                                                    TextView Date = findViewById(R.id.Date);
+                                                                    Date.setText(date);
 
-                                                                TextView Date = findViewById(R.id.Date);
-                                                                Date.setText(date);
+                                                                    TextView Location = findViewById(R.id.Location);
+                                                                    Location.setText(initCapLocation);
 
-                                                                TextView Location = findViewById(R.id.Location);
-                                                                Location.setText(initCapLocation);
+                                                                    TextView gameskill = findViewById(R.id.gameskill);
+                                                                    gameskill.setText(gameSkill);
 
-                                                                TextView gameskill = findViewById(R.id.gameskill);
-                                                                gameskill.setText(gameSkill);
+                                                                    ShapeableImageView Home_GamePic = findViewById(R.id.Home_GamePic);
+                                                                    Picasso.get().load(profileImageUrl).into(Home_GamePic);
 
-                                                                ShapeableImageView Home_GamePic = findViewById(R.id.Home_GamePic);
-                                                                Picasso.get().load(profileImageUrl).into(Home_GamePic);
+                                                                    TextView maxplayers = findViewById(R.id.maxPlayers);
+                                                                    maxplayers.setText(maxPlayers);
 
-                                                                TextView maxplayers = findViewById(R.id.maxPlayers);
-                                                                maxplayers.setText(maxPlayers);
+                                                                    TextView joinedParticipants = findViewById(R.id.joinedParticipants);
+                                                                    joinedParticipants.setText(String.valueOf(joinedPlayersCount));
 
-                                                                TextView joinedParticipants = findViewById(R.id.joinedParticipants);
-                                                                joinedParticipants.setText(String.valueOf(joinedPlayersCount));
-
-                                                                latestGameId = gameId;
-
-
-                                                            } else {
-                                                                Log.d("fetchLatestGame", "User document does not exist");
+                                                                    latestGameId = gameId;
+                                                                } else {
+                                                                    Log.d("fetchGamesList", "User document does not exist");
+                                                                }
                                                             }
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.e("fetchLatestGame", "Error getting user document", e);
-                                                        }
-                                                    });
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.e("fetchLatestGame", "Error getting joined players count", e);
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.e("fetchGamesList", "Error getting user document", e);
+                                                            }
+                                                        });
+
                                         }
                                     });
-                                        } else
-
-                                        {
-                                            Log.d("fetchLatestGame", "No games found");
-                                        }
-                                    }
-                        })
+                        }
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(HomePage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-
-                    private String toInitCap(String text) {
-                        if (text == null || text.isEmpty()) {
-                            return text;
-                        }
-
-                        // Split the text by space and capitalize each word
-                        String[] words = text.toLowerCase().split("\\s");
-                        StringBuilder initCapText = new StringBuilder();
-                        for (String word : words) {
-                            if (!word.isEmpty()) {
-                                initCapText.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-                            }
-                        }
-                        return initCapText.toString().trim();
-                    }
-
-
-                    private void updateLocationText(Location location) {
-                        Geocoder geocoder = new Geocoder(HomePage.this, Locale.getDefault());
-                        try {
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            if (addresses != null && addresses.size() > 0) {
-                                String address = addresses.get(0).getAddressLine(0);
-                                currentLocationTextView.setText(address);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    private void editLocation() {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Edit Location");
-
-                        // Set up the layout for the dialog
-                        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_location, null);
-                        builder.setView(dialogView);
-
-                        // Get references to the EditText fields
-                        EditText streetEditText = dialogView.findViewById(R.id.streetEditText);
-                        EditText stateEditText = dialogView.findViewById(R.id.stateEditText);
-                        EditText countryEditText = dialogView.findViewById(R.id.countryEditText);
-
-                        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Get the text from the EditText fields
-                                String street = streetEditText.getText().toString().trim();
-                                String state = stateEditText.getText().toString().trim();
-                                String country = countryEditText.getText().toString().trim();
-
-                                // Create the full location string
-                                String newLocation = street + ", " + state + ", " + country;
-
-                                // Update the location text view
-                                currentLocationTextView.setText(newLocation);
-
-                                // Save the new location to Firestore
-                                saveLocationToFirestore(newLocation);
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        builder.show();
-                    }
-
-
-                    //save Location to Firestore
-                    private void saveLocationToFirestore(String location) {
-                        db.collection("users").document(auth.getCurrentUser().getUid())
-                                .update("location", location)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        currentLocationName = location;
-                                        updateLocationUI(currentLocationName); // Update the UI to display the newly saved location
-                                        Log.d("saveLocationToFirestore", "Location updated successfully");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("saveLocationToFirestore", "Error updating location", e);
-                                    }
-                                });
-                    }
-
-                    //load location of user from firestore
-                    private void loadUserLocation() {
-                        db.collection("users").document(auth.getCurrentUser().getUid())
-                                .get()
-                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot.exists()) {
-                                            String location = documentSnapshot.getString("location");
-                                            if (location != null && !location.isEmpty()) {
-                                                currentLocationName = location;
-                                                updateLocationUI(currentLocationName);
-                                            }
-                                        } else {
-                                            Log.d("HomePage", "User document does not exist");
-                                        }
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("HomePage", "Error getting user document", e);
-                                    }
-                                });
-                    }
-
                     @Override
-                    protected void onResume() {
-                        super.onResume();
-                        loadUserLocation(); // Load user's location when the activity is resumed
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(HomePage.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                });
+    }
 
 
-                    //load profile image
-                    private void loadProfileImage() {
-
-                        db.collection("users").document(auth.getCurrentUser().getUid())
-                                .get()
-                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot.exists()) {
-                                            String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-
-                                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                                                Glide.with(HomePage.this).load(profileImageUrl).into(profileImageView);
-                                            } else {
-                                                Glide.with(HomePage.this).load(R.drawable.profile).into(profileImageView);
-                                            }
-                                        } else {
-                                            Log.d("HomeActivity", "No such document");
-                                        }
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("HomeActivity", "Error getting document", e);
-                                    }
-                                });
-                    }
-                }
+}
