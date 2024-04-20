@@ -53,19 +53,14 @@ public class GameDetails extends AppCompatActivity {
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Find the ImageButton in the layout
+        // back Button
         ImageButton backButton = findViewById(R.id.backButton);
-        // Set onClick listener for the ImageButton
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent to navigate back to the GameList activity
                 Intent intent = new Intent(GameDetails.this, GameList.class);
-
-                // Start the GameList activity
                 startActivity(intent);
 
-                // Finish the current activity (GameDetails) to prevent going back to it when pressing back
                 finish();
             }
         });
@@ -73,11 +68,9 @@ public class GameDetails extends AppCompatActivity {
         //join Button
         Button joinNowButton = findViewById(R.id.joinNowButton);
 
-        // Set onClick listener for the "Join Now" button
         joinNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add the user ID to the list of joined players
                 joinGame(gameId);
             }
         });
