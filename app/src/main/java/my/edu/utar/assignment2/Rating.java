@@ -10,11 +10,11 @@ public class Rating {
         // Default constructor required for Firestore
     }
 
-    public Rating(String userId, int rating, String review, String gameId) {
+    public Rating(String userId, int rating, String reviewd) {
         this.userId = userId;
         this.rating = rating;
         this.review = review;
-        this.gameId = gameId;
+
     }
 
     public String getUserId() {
