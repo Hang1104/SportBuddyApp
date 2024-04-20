@@ -33,8 +33,8 @@ public class CommunityActivity extends AppCompatActivity {
         createPostLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CommunityActivity.this, CreateNewPost.class));
-            }
+//                Intent intent = new Intent(CommunityActivity.this, CreateNewPost.class);
+//                startActivity(intent);            }
         });
     }
 }

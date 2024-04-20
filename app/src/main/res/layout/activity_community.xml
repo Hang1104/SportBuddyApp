@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toStartOf="@+id/C_textView2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add" />
+            app:srcCompat="@drawable/back_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
