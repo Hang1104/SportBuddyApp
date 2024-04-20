@@ -10,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import my.edu.utar.assignment2.CommunityPage.CommunityActivity;
+import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.ProfilePage.Profile;
 import my.edu.utar.assignment2.R;
 import my.edu.utar.assignment2.RatingPage;
+import my.edu.utar.assignment2.createGame.GameDetails;
 
 public class LearningPage extends AppCompatActivity {
 
@@ -62,6 +67,46 @@ public class LearningPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageView homePageBtn = findViewById(R.id.homePageBtn);
+        homePageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LearningPage.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Chat button
+        ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LearningPage.this, CommunityActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Book button
+        ImageView learnBtn = findViewById(R.id.learnBtn);
+        learnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LearningPage.this, LearningPage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Profile button
+        ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
+        ProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LearningPage.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private Map<String, Object> createSport(String name, int imageResId, Class<?> activityClass, int color) {
