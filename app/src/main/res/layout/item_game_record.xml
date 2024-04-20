@@ -1,65 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="400dp">
 
-    <TextView
-        android:id="@+id/sportTypeTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:padding="8dp"/>
 
-    <TextView
-        android:id="@+id/gameSkillTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp"/>
+    <LinearLayout
+        android:id="@+id/parentLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp"/>
+        <TextView
+            android:id="@+id/sportTypeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/addressTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp"/>
+        <TextView
+            android:id="@+id/gameSkillTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="377dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp"/>
+        <TextView
+            android:id="@+id/locationTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/startTimeTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp"/>
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/endTimeTextView"
-        android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="8dp" />
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/startTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/endTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/rankButton"
+        android:layout_width="105dp"
+        android:layout_height="47dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="4dp"
+        android:text="Rating"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentLinearLayout" />
+
+    <Button
+        android:id="@+id/viewratingbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rating"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="52dp"
+        android:text="View Rating"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentLinearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

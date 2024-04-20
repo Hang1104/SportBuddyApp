@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -23,6 +25,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,13 +114,12 @@ public class Profile extends AppCompatActivity {
         horizontalRecyclerView.setAdapter(adapter);
 
 
-        //request location permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-        } else {
-            startLocationUpdates();
-        }
-
+//        //request location permission
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+//        } else {
+//            startLocationUpdates();
+//        }
 
         //select new profile image
         avatarImage.setOnClickListener(new View.OnClickListener() {
@@ -158,9 +160,8 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //Navigation Bar
         // Navigation Bar
-// Home button
+        // Home button
         ImageView homePageBtn = findViewById(R.id.homePageBtn);
         homePageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +171,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-// Chat button
+        // Chat button
         ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +180,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-// Book button
+        // Book button
         ImageView learnBtn = findViewById(R.id.learnBtn);
         learnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +190,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-// Profile button
+        // Profile button
         ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
         ProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,89 +199,6 @@ public class Profile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-    }
-    private void loadSportInformation() {
-        // Assuming you have a 'items' collection in Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("skill_levels")
-                .whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    // Clear the existing itemList
-                    itemList.clear();
-
-                    // Add each item from the Firestore query result to the itemList
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        String selectedSkillLevel = document.getString("selectedSkillLevel");
-                        String selectedSport = document.getString("selectedSport");
-                        itemList.add(selectedSport);
-                        itemList.add(selectedSkillLevel);
-                    }
-
-                    // Notify the adapter that the data set has changed
-                    adapter.notifyDataSetChanged();
-
-                    // If itemList is empty, add a placeholder item
-                    if (itemList.isEmpty()) {
-                        itemList.add("No data");
-                        adapter.notifyDataSetChanged();
-                    }
-                })
-                .addOnFailureListener(e -> Log.d(TAG, "Error getting documents: ", e));
-    }
-
-    //load create game information
-    private void loadGameInformation() {
-        db.collection("createGame")
-                .whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Map<String, Object> data = document.getData();
-                            String dateString = (String) document.getData().get("date");
-                            SimpleDateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
-                            Date date = null;
-                            try {
-                                date = format.parse(dateString);
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                            // Check if game date has passed
-                            if (date.before(new Date())) {
-                                mAdapter.addGamesRecord(new GameRecord(
-                                        (String) data.get("sportType"),
-                                        (String) data.get("gameSkill"),
-                                        (String) data.get("location"),
-                                        (String) data.get("address"),
-                                        date,
-                                        (String) data.get("startTime"),
-                                        (String) data.get("endTime"),
-                                        true // Indicates that the game date has passed
-                                ));
-                            } else {
-                                mAdapter.addGamesRecord(new GameRecord(
-                                        (String) data.get("sportType"),
-                                        (String) data.get("gameSkill"),
-                                        (String) data.get("location"),
-                                        (String) data.get("address"),
-                                        date,
-                                        (String) data.get("startTime"),
-                                        (String) data.get("endTime"),
-                                        false // Indicates that the game date has not passed
-                                ));
-                            }
-                        }
-                        mAdapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(Profile.this, "No Game", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> Toast.makeText(Profile.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
     private void loadUserProfile() {
@@ -391,59 +309,216 @@ public class Profile extends AppCompatActivity {
     }
 
     // proceed the location request
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startLocationUpdates();
-            } else {
-                Toast.makeText(this, "need permission of location to save the location information", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == PERMISSION_REQUEST_CODE) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                startLocationUpdates();
+//            } else {
+//                Toast.makeText(this, "need permission of location to save the location information", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     //update location
-    private void startLocationUpdates() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // Convert latitude and longitude to a human-readable address
-                Geocoder geocoder = new Geocoder(Profile.this, Locale.getDefault());
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    if (addresses != null && addresses.size() > 0) {
-                        Address address = addresses.get(0);
-                        String locationName = address.getLocality() + ", " + address.getAdminArea(); // Example: Kampar, Perak
-                        locationText.setText(locationName); // Display the location name in your TextView
+//    private void startLocationUpdates() {
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        locationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                // Convert latitude and longitude to a human-readable address
+//                Geocoder geocoder = new Geocoder(Profile.this, Locale.getDefault());
+//                try {
+//                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                    if (addresses != null && addresses.size() > 0) {
+//                        String address = addresses.get(0).getAddressLine(0);
+////                        String locationName = address.getLocality() + ", " + address.getAdminArea(); // Example: Kampar, Perak
+//                        locationText.setText(address); // Display the location name in your TextView
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//            }
+//        };
+//
+//        // check location permission
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            if (lastKnownLocation != null) {
+//                updateLocationText(lastKnownLocation);
+//            }
+//        }
+//    }
+
+//    private void updateLocationText(Location location) {
+//        Geocoder geocoder = new Geocoder(Profile.this, Locale.getDefault());
+//        try {
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//            if (addresses != null && addresses.size() > 0) {
+//                String address = addresses.get(0).getAddressLine(0);
+//                locationText.setText(address);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    //editLocation
+//    private void editLocation() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Edit Location");
+//
+//        // Set up the layout for the dialog
+//        View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_location, null);
+//        builder.setView(dialogView);
+//
+//        // Get references to the EditText fields
+//        EditText streetEditText = dialogView.findViewById(R.id.streetEditText);
+//        EditText stateEditText = dialogView.findViewById(R.id.stateEditText);
+//        EditText countryEditText = dialogView.findViewById(R.id.countryEditText);
+//
+//        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                // Get the text from the EditText fields
+//                String street = streetEditText.getText().toString().trim();
+//                String state = stateEditText.getText().toString().trim();
+//                String country = countryEditText.getText().toString().trim();
+//
+//                // Create the full location string
+//                String newLocation = street + ", " + state + ", " + country;
+//
+//                // Update the location text view
+//                locationText.setText(newLocation);
+//
+//                // Save the new location to Firestore
+//                saveLocationToFirestore(newLocation);
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//        builder.show();
+//    }
+
+
+//    //update edit location
+//    private void saveLocationToFirestore(String newlocation) {
+//        db.collection("users").document(auth.getCurrentUser().getUid())
+//                .update("location", newlocation)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d("edit Location", "Location updated successfully");
+//                        loadUserProfile();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.e("edit Location", "Error updating location", e);
+//                    }
+//                });
+//    }
+
+    //load create game information
+    private void loadGameInformation() {
+        db.collection("createGame")
+                .whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Map<String, Object> data = document.getData();
+                            String dateString = (String) document.getData().get("date");
+                            SimpleDateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
+                            Date date = null;
+                            try {
+                                date = format.parse(dateString);
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            // Check if game date has passed
+                            if (date.before(new Date())) {
+                                mAdapter.addGamesRecord(new GameRecord(
+                                        (String) data.get("sportType"),
+                                        (String) data.get("gameSkill"),
+                                        (String) data.get("location"),
+                                        (String) data.get("address"),
+                                        date,
+                                        (String) data.get("startTime"),
+                                        (String) data.get("endTime"),
+                                        true // Indicates that the game date has passed
+                                ));
+                            } else {
+                                mAdapter.addGamesRecord(new GameRecord(
+                                        (String) data.get("sportType"),
+                                        (String) data.get("gameSkill"),
+                                        (String) data.get("location"),
+                                        (String) data.get("address"),
+                                        date,
+                                        (String) data.get("startTime"),
+                                        (String) data.get("endTime"),
+                                        false // Indicates that the game date has not passed
+                                ));
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(Profile.this, "No Game", Toast.LENGTH_SHORT).show();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+                })
+                .addOnFailureListener(e -> Toast.makeText(Profile.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
 
+    private void loadSportInformation() {
+        // Assuming you have a 'items' collection in Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("skill_levels")
+                .whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    // Clear the existing itemList
+                    itemList.clear();
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
+                    // Add each item from the Firestore query result to the itemList
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        String selectedSkillLevel = document.getString("selectedSkillLevel");
+                        String selectedSport = document.getString("selectedSport");
+                        itemList.add(selectedSport);
+                        itemList.add(selectedSkillLevel);
+                    }
 
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
+                    // Notify the adapter that the data set has changed
+                    adapter.notifyDataSetChanged();
 
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-        };
-
-        // check location permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        } else {
-            // doesn't have the permission of location
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-        }
+                    // If itemList is empty, add a placeholder item
+                    if (itemList.isEmpty()) {
+                        itemList.add("No data");
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(e -> Log.d(TAG, "Error getting documents: ", e));
     }
 
     @Override

@@ -64,19 +64,21 @@
 
         <LinearLayout
             android:id="@+id/detailsSection"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="410dp"
+            android:layout_height="247dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="85dp">
+            tools:layout_editor_absoluteY="73dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatarImage"
-                android:layout_width="88dp"
-                android:layout_height="match_parent"
+                android:layout_width="83dp"
+                android:layout_height="169dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
@@ -85,11 +87,11 @@
                 app:civ_border_width="2dp" />
 
             <LinearLayout
-                android:layout_width="310dp"
-                android:layout_height="180dp"
+                android:layout_width="301dp"
+                android:layout_height="166dp"
+                android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginTop="30dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
@@ -117,12 +119,13 @@
 
                 <TextView
                     android:id="@+id/locationText"
-                    android:layout_width="match_parent"
+                    android:layout_width="281dp"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:text="Location"
                     android:textSize="16sp" />
+
 
             </LinearLayout>
 
@@ -130,20 +133,18 @@
 
         <View
             android:id="@+id/divider"
-            android:layout_width="409dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
+            android:layout_width="402dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toTopOf="@+id/myGameText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailsSection" />
-
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/myGameText"
             android:layout_width="418dp"
             android:layout_height="458dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-medium"
             android:padding="16dp"
             android:text="My Game"
@@ -227,19 +228,6 @@
             app:layout_constraintTop_toBottomOf="@+id/myGameText"
             app:layout_constraintVertical_bias="0.872" />
 
-
-        <!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-        <!--            android:id="@+id/bottomNavigationView"-->
-        <!--            android:layout_width="415dp"-->
-        <!--            android:layout_height="60dp"-->
-        <!--            android:layout_marginTop="24dp"-->
-        <!--            app:itemIconTint="@color/black"-->
-        <!--            app:itemTextColor="@color/black"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="1.0"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/out"-->
-        <!--            app:menu="@menu/bottom_navigation_menu" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
     <!-- Navigation bar -->
