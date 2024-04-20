@@ -87,11 +87,18 @@ public class CreateNewPost extends AppCompatActivity {
     }
 
     private byte[] getImageByteArray() {
-        Bitmap bitmap = ((BitmapDrawable) uploadedImageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
+        BitmapDrawable drawable = (BitmapDrawable) uploadedImageView.getDrawable();
+        if (drawable != null && drawable.getBitmap() != null) {
+            Bitmap bitmap = drawable.getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            return baos.toByteArray();
+        } else {
+            // Handle the case when the drawable or bitmap is null
+            return null;
+        }
     }
+
 
     private void openImagePicker() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
