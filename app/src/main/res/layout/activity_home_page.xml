@@ -71,7 +71,7 @@
                 android:layout_height="704dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Home_constraintLayout"
+                    android:id="@+id/creategameBtnlayout"
                     android:layout_width="314dp"
                     android:layout_height="91dp"
                     android:layout_marginTop="12dp"
@@ -119,7 +119,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.167"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout"
                     app:layout_constraintVertical_bias="0.658" />
 
                 <TextView
@@ -136,7 +136,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toEndOf="@+id/Home_JoinGameTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout"
                     app:layout_constraintVertical_bias="0.666" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,7 +148,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.51"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/Home_GamePic"

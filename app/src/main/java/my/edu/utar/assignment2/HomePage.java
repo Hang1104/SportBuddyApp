@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -101,8 +102,7 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         loadProfileImage();
 
         //create game button
-        ImageView createGameButton = findViewById(R.id.Home_creategameBtn);
-
+        ConstraintLayout createGameButton = findViewById(R.id.creategameBtnlayout);
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
