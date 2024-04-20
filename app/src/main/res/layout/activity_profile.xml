@@ -64,7 +64,7 @@
 
         <LinearLayout
             android:id="@+id/detailsSection"
-            android:layout_width="410dp"
+            android:layout_width="match_parent"
             android:layout_height="247dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -159,7 +159,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gameRecyclerView"
-            android:layout_width="358dp"
+            android:layout_width="wrap_content"
             android:layout_height="383dp"
             android:layout_marginBottom="24dp"
             android:orientation="horizontal"
@@ -217,7 +217,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/horizontalRecyclerView"
-            android:layout_width="332dp"
+            android:layout_width="wrap_content"
             android:layout_height="147dp"
             android:layout_below="@id/addButton"
             android:orientation="horizontal"
