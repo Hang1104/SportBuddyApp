@@ -1,4 +1,4 @@
-activity_community.xmlpackage my.edu.utar.assignment2;
+package my.edu.utar.assignment2.CommunityPage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.R;
 
 public class CommunityActivity extends AppCompatActivity {
 

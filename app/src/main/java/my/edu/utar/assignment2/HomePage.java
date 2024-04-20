@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import my.edu.utar.assignment2.CommunityPage.CommunityActivity;
 import my.edu.utar.assignment2.LearningPage.LearningPage;
 import my.edu.utar.assignment2.ProfilePage.Profile;
 
@@ -185,9 +186,8 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         CommunityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CommunityActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, CommunityActivity.class);
+                startActivity(intent);
             }
         });
 
