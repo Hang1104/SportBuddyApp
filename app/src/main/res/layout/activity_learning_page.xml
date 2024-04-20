@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LearningPage.LearningPage">
 
     <!-- Title bar -->
-
-    <!-- GridView -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:background="#3F51B5"
+        android:background="#793298"
         android:gravity="left"
         android:padding="16dp"
         android:text="Sports Learning Space"
         android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
+    <!-- GridView -->
     <GridView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="527dp"
         android:layout_below="@id/titleTextView"
         android:horizontalSpacing="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="15dp"
         android:numColumns="1"
-        android:verticalSpacing="10dp" />
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:verticalSpacing="10dp"
+        android:layout_above="@id/navigationBar"/>
+
+    <!-- Bottom navigation bar -->
+    <include
+        layout="@layout/bottom_navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
