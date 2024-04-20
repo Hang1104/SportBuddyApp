@@ -158,7 +158,6 @@ public class GameList extends AppCompatActivity {
                             String keyword = getIntent().getStringExtra("newLocation");
 
                             // Check if the location or address contains the keyword
-                            if (location.contains(keyword) || address.contains(keyword)) {
                                 // Fetch username from 'users' collection
                                 db.collection("users").document(userId)
                                         .get()
@@ -193,7 +192,6 @@ public class GameList extends AppCompatActivity {
                                                 Log.e("fetchGamesList", "Error getting user document", e);
                                             }
                                         });
-                            }
                         }
                     }
                 })

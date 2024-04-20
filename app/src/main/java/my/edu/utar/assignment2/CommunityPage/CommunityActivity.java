@@ -32,7 +32,6 @@ public class CommunityActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        // Set onClickListener for the "Community" TextView
         TextView communityTextView = findViewById(R.id.C_textView2);
         communityTextView.setOnClickListener(new View.OnClickListener() {
             @Override

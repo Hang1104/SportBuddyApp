@@ -49,6 +49,8 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
+
+
             <RelativeLayout
                 android:id="@+id/sportSection"
                 android:layout_width="match_parent"
@@ -56,6 +58,15 @@
                 android:layout_below="@id/top"
                 android:layout_marginTop="10dp"
                 android:background="@color/card_background">
+
+                <TextView
+                    android:id="@+id/currentLocationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Location: "
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
 
                 <TextView
                     android:id="@+id/sportLabel"

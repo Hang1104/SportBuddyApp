@@ -58,7 +58,7 @@ public class GameDetails extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameDetails.this, GameList.class);
+                Intent intent = new Intent(GameDetails.this, HomePage.class);
                 startActivity(intent);
 
                 finish();
