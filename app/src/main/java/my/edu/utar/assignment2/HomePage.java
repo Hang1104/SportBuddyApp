@@ -151,11 +151,12 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         ImageView chatBtn = findViewById(R.id.chatBtn);
 
         chatBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+               @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, ChatActivity.class);
-//                startActivity(intent);
-                Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, CommunityActivity.class);
+                startActivity(intent);
+
             }
         });
 
