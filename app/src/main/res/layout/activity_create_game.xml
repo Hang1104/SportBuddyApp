@@ -60,15 +60,6 @@
                 android:background="@color/card_background">
 
                 <TextView
-                    android:id="@+id/currentLocationTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Current Location: "
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-
-                <TextView
                     android:id="@+id/sportLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

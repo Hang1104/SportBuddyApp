@@ -66,26 +66,9 @@ public class CreateGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
-        // Find the TextView
-        currentLocationTextView = findViewById(R.id.currentLocationTextView);
-
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
-        // Initialize location manager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Check for location permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        } else {
-            // Permission is already granted, initialize location listener
-            initializeLocationListener();
-        }
 
         // Back Button
         ImageButton backButton = findViewById(R.id.backButton);
@@ -189,42 +172,6 @@ public class CreateGame extends AppCompatActivity {
         });
     }
 
-    private void initializeLocationListener() {
-        // LocationListener initialization
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // Handle location change
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-
-                // Update the TextView with the new location
-                currentLocationTextView.setText("Latitude: " + latitude + ", Longitude: " + longitude);
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                // Handle changes in location provider status (e.g., enabled/disabled)
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-                // Handle when the location provider is enabled
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                // Handle when the location provider is disabled
-            }
-        };
-
-        // Request location updates (if permission is granted)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
-    }
-
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -299,21 +246,6 @@ public class CreateGame extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, initialize location listener
-                initializeLocationListener();
-            } else {
-                // Permission denied, show a message or handle it accordingly
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void createGame() {
         // Get user input from UI elements
         Spinner sportSpinner = findViewById(R.id.sportSpinner);
@@ -335,8 +267,6 @@ public class CreateGame extends AppCompatActivity {
         String gameSkill = skillLevelSpinner.getSelectedItem().toString();
         String maxPlayersStr = maxPlayersEditText.getText().toString();
 
-        int maxPlayers = Integer.parseInt(maxPlayersStr);
-
         // Check if any field is empty
         if (sportType.isEmpty() || location.isEmpty() || date.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || gameSkill.isEmpty() || maxPlayersStr.isEmpty()) {
             // Display a toast message indicating that all fields must be filled
@@ -351,6 +281,7 @@ public class CreateGame extends AppCompatActivity {
 
         // Get current timestamp
         long currentTime = System.currentTimeMillis();
+        int maxPlayers = Integer.parseInt(maxPlayersStr);
 
 
         // Create a new game object
