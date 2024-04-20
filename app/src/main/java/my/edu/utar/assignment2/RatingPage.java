@@ -78,6 +78,7 @@ public class RatingPage extends AppCompatActivity {
                 // Process the review (e.g., submit to server)
                 saveRatingAndReview(rating, review);
                 showToast("Review submitted: " + review);
+                finish();
             }
         });
 

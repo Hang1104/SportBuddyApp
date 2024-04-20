@@ -70,6 +70,15 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         //location
         currentLocationTextView = findViewById(R.id.Home_currentLocationTextView);
 
+        //location button
+        ImageView locationBtn = findViewById(R.id.UseMapBtn);
+        locationBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(HomePage.this, LocationInputView.class);
+                startActivity(intent);
+            }
+        });
+
         //check location permission
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

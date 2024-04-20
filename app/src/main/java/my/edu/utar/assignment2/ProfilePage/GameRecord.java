@@ -11,6 +11,7 @@ public class GameRecord {
     private String startTime;
     private String endTime;
     private boolean hasGameDatePassed;
+    private String gameId;
 
     public GameRecord(String sportType, String gameSkill, String location, String address, Date date, String startTime, String endTime, boolean hasGameDatePassed) {
         this.sportType = sportType;
@@ -21,8 +22,12 @@ public class GameRecord {
         this.startTime = startTime;
         this.endTime = endTime;
         this.hasGameDatePassed = hasGameDatePassed;
+//    this.gameId=gameId;
     }
 
+    public String getGameId() {
+        return gameId;
+    }
     public String getSportType() {
         return sportType;
     }
@@ -84,4 +89,3 @@ public class GameRecord {
         return currentDate.after(date);
     }
 }
-
