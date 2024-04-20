@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,9 @@ import java.util.List;
 import java.util.Locale;
 
 import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.LearningPage.LearningPage;
 import my.edu.utar.assignment2.MainActivity;
+import my.edu.utar.assignment2.ProfilePage.Profile;
 import my.edu.utar.assignment2.R;
 
 public class CreateGame extends AppCompatActivity {
@@ -142,12 +145,44 @@ public class CreateGame extends AppCompatActivity {
             }
         });
 
-//        EditText maxPlayersEditText = findViewById(R.id.maxPlayersEditText);
-//        // Get the maximum number of players from the EditText
-//        String maxPlayersStr = maxPlayersEditText.getText().toString();
-//
-//        // Convert the string to an integer (assuming the input is valid)
-//        int maxPlayers = Integer.parseInt(maxPlayersStr);
+        // Home button
+        ImageView homePageBtn = findViewById(R.id.homePageBtn);
+        homePageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateGame.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Chat button
+        ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CreateGame.this, "hi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Book button
+        ImageView learnBtn = findViewById(R.id.learnBtn);
+        learnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateGame.this, LearningPage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Profile button
+        ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
+        ProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateGame.this, Profile.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initializeLocationListener() {

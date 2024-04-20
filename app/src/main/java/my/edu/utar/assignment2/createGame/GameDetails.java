@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.LearningPage.LearningPage;
+import my.edu.utar.assignment2.ProfilePage.Profile;
 import my.edu.utar.assignment2.R;
 
 public class GameDetails extends AppCompatActivity {
@@ -67,7 +70,7 @@ public class GameDetails extends AppCompatActivity {
             }
         });
 
-
+        //join Button
         Button joinNowButton = findViewById(R.id.joinNowButton);
 
         // Set onClick listener for the "Join Now" button
@@ -76,6 +79,45 @@ public class GameDetails extends AppCompatActivity {
             public void onClick(View v) {
                 // Add the user ID to the list of joined players
                 joinGame(gameId);
+            }
+        });
+
+        // Home button
+        ImageView homePageBtn = findViewById(R.id.homePageBtn);
+        homePageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameDetails.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Chat button
+        ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GameDetails.this, "hi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Book button
+        ImageView learnBtn = findViewById(R.id.learnBtn);
+        learnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameDetails.this, LearningPage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Profile button
+        ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
+        ProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameDetails.this, Profile.class);
+                startActivity(intent);
             }
         });
 
@@ -96,6 +138,8 @@ public class GameDetails extends AppCompatActivity {
 
             displayJoinedPlayers(gameId);
         }
+
+
     }
 
     private void getGameDetails(String gameId, TextView sportTypeTextView, TextView locationTextView, TextView addressTextView, TextView dateTextView, TextView startTimeTextView, TextView endTimeTextView, TextView gameSkillTextView) {

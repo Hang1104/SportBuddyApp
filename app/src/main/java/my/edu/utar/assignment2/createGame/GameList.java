@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import my.edu.utar.assignment2.HomePage;
+import my.edu.utar.assignment2.LearningPage.LearningPage;
+import my.edu.utar.assignment2.ProfilePage.Profile;
 import my.edu.utar.assignment2.R;
 
 public class GameList extends AppCompatActivity {
@@ -78,8 +81,6 @@ public class GameList extends AppCompatActivity {
         };
         // Set adapter after initializing
         gamesListView.setAdapter(adapter);
-
-
         gamesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,8 +90,47 @@ public class GameList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         fetchGamesList();
+
+        // Home button
+        ImageView homePageBtn = findViewById(R.id.homePageBtn);
+        homePageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameList.this, HomePage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Chat button
+        ImageView chatBtn = findViewById(R.id.Home_CommunityBtn);
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(GameList.this, "hi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Book button
+        ImageView learnBtn = findViewById(R.id.learnBtn);
+        learnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameList.this, LearningPage.class);
+                startActivity(intent);
+            }
+        });
+
+        // Profile button
+        ImageView ProfileBtn = findViewById(R.id.ProfileBtn);
+        ProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameList.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
