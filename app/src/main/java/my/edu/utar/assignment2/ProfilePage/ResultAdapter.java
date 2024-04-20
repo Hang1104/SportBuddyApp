@@ -52,7 +52,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
         if (record.hasGameDatePassed()) {
             holder.rankButton.setVisibility(View.VISIBLE);
-            holder.viewRatingButton.setVisibility(View.VISIBLE);
+//            holder.viewRatingButton.setVisibility(View.VISIBLE);
             holder.rankButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,15 +61,15 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
                     v.getContext().startActivity(intent);
                 }
             });
-            holder.viewRatingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Navigate to View Rating Page
-                }
-            });
+//            holder.viewRatingButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Navigate to View Rating Page
+//                }
+//            });
         } else {
             holder.rankButton.setVisibility(View.GONE);
-            holder.viewRatingButton.setVisibility(View.GONE);
+//            holder.viewRatingButton.setVisibility(View.GONE);
         }
     }
 
@@ -85,7 +85,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         TextView dateTextView;
         TextView startTimeTextView;
         TextView endTimeTextView;
-        Button rankButton, viewRatingButton;
+        Button rankButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +96,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             startTimeTextView = itemView.findViewById(R.id.startTimeTextView);
             endTimeTextView = itemView.findViewById(R.id.endTimeTextView);
             rankButton = itemView.findViewById(R.id.rankButton);
-            viewRatingButton = itemView.findViewById(R.id.viewratingbutton);
+//            viewRatingButton = itemView.findViewById(R.id.viewratingbutton);
         }
     }
 }
