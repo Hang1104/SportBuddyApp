@@ -185,7 +185,7 @@ public class HomePage extends AppCompatActivity implements LocationListener {
         CommunityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(HomePage.this, CreateGameActivity.class);
+//                Intent intent = new Intent(HomePage.this, CommunityActivity.class);
 //                startActivity(intent);
                 Toast.makeText(HomePage.this, "hi", Toast.LENGTH_SHORT).show();
             }
