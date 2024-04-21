@@ -20,6 +20,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import my.edu.utar.assignment2.R;
@@ -30,9 +32,7 @@ public class RatingPage extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference ratingRef;
     private FirebaseFirestore db;
-
-
-
+    private  String game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +43,12 @@ public class RatingPage extends AppCompatActivity {
         EditText reviewEditText = findViewById(R.id.reviewEditText);
         Button submitButton = findViewById(R.id.submitButton);
         Button cancelButton = findViewById(R.id.cancelButton);
-
         FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         ratingRef = FirebaseDatabase.getInstance().getReference("rating");
+        game = getIntent().getStringExtra("game");
+        Log.d("RatingPage", "Received gameId: " + game);
 
 
 
@@ -88,6 +89,9 @@ public class RatingPage extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
     }
 
     private void updateRating(int newRating) {
@@ -104,19 +108,28 @@ public class RatingPage extends AppCompatActivity {
     }
 
     private void saveRatingAndReview(int rating, String review) {
-        // Save the rating and review to Firestore under a "ratings" collection
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db.collection("ratings")
-                .add(new Rating(userId, rating, review))
-                .addOnSuccessListener(documentReference -> {
-                    // Data saved successfully
-                    Log.d("Firestore", "Rating and review saved with ID: " + documentReference.getId());
+        String gameId = getIntent().getStringExtra("game");
+
+        // Update the rating and review arrays in the createGame document
+        DocumentReference gameRef = db.collection("createGame").document(gameId);
+        gameRef.update("ratings", FieldValue.arrayUnion(rating));
+        gameRef.update("reviews", FieldValue.arrayUnion(review))
+                .addOnSuccessListener(aVoid -> {
+                    // Data updated successfully
+                    Log.d("Firestore", "Rating and review updated for game: " + gameId);
+                    Log.d("Firestore", "Rating: " + rating);
+                    Log.d("Firestore", "Review: " + review);
                 })
                 .addOnFailureListener(e -> {
                     // Handle failure
-                    Log.e("Firestore", "Error saving data: " + e.getMessage());
+                    Log.e("Firestore", "Error updating rating and review: " + e.getMessage());
                 });
+
+
+
     }
+
 
 
 
