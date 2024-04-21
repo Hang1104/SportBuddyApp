@@ -46,6 +46,9 @@
             android:name=".RatingPage"
             android:exported="false" />
         <activity
+            android:name=".ViewRatingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ProfilePage.GameRecord"
             android:exported="false" />
         <activity
