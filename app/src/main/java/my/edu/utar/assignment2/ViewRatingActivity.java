@@ -18,6 +18,7 @@ import java.util.List;
 
 import my.edu.utar.assignment2.LearningPage.LearningPage;
 import my.edu.utar.assignment2.ProfilePage.Profile;
+import my.edu.utar.assignment2.CommunityPage.CommunityActivity;
 
 public class ViewRatingActivity extends AppCompatActivity {
 
