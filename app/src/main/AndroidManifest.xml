@@ -78,7 +78,7 @@
         <activity
             android:name=".LearningPage.Basketball"
             android:exported="false" />
-        <activity android:name=".CommunityPage.CreateNewPost" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
