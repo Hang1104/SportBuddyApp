@@ -71,8 +71,8 @@ public class ViewRatingActivity extends AppCompatActivity {
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(ViewRatingActivity.this, CommunityActivity.class);
-//                startActivity(intent);
+               Intent intent = new Intent(ViewRatingActivity.this, CommunityActivity.class);
+               startActivity(intent);
             }
         });
 
