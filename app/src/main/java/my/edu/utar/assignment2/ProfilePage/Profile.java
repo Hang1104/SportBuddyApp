@@ -497,6 +497,52 @@ public class Profile extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(Profile.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+
+        db.collection("createGame")
+                .whereArrayContains("joinedPlayers", auth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        String game = document.getId();
+                        Map<String, Object> data = document.getData();
+                        String dateString = (String) data.get("date");
+                        SimpleDateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
+                        Date date = null;
+                        try {
+                            date = format.parse(dateString);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        // Check if game date has passed
+                        if (date.before(new Date())) {
+                            mAdapter.addGamesRecord(new GameRecord(
+                                    (String) data.get("sportType"),
+                                    (String) data.get("gameSkill"),
+                                    (String) data.get("location"),
+                                    (String) data.get("address"),
+                                    date,
+                                    (String) data.get("startTime"),
+                                    (String) data.get("endTime"),
+                                    true, // Indicates that the game date has passed
+                                    game // Pass gameId to the GameRecord constructor
+                            ));
+                        } else {
+                            mAdapter.addGamesRecord(new GameRecord(
+                                    (String) data.get("sportType"),
+                                    (String) data.get("gameSkill"),
+                                    (String) data.get("location"),
+                                    (String) data.get("address"),
+                                    date,
+                                    (String) data.get("startTime"),
+                                    (String) data.get("endTime"),
+                                    false, // Indicates that the game date has not passed
+                                    game // Pass gameId to the GameRecord constructor
+                            ));
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("ProfileActivity", "Error getting joined games", e));
     }
 
     private void loadSportInformation() {
