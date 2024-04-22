@@ -342,38 +342,36 @@
             android:id="@+id/homePageBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
+            android:layout_marginStart="36dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chatBtn"
-            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/home" />
 
         <ImageView
             android:id="@+id/chatBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="135dp"
+            android:layout_marginStart="36dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/learnBtn"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/homePageBtn"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/chat" />
 
         <ImageView
             android:id="@+id/learnBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="230dp"
+            android:layout_marginStart="28dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ProfileBtn"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/chatBtn"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.496"
             app:srcCompat="@drawable/book" />
 
         <ImageView
@@ -384,7 +382,10 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toEndOf="@+id/learnBtn"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/profile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
