@@ -33,7 +33,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -56,8 +55,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import my.edu.utar.assignment2.CommunityPage.CommunityActivity;
-import my.edu.utar.assignment2.CommunityPage.CreateNewPost;
 import my.edu.utar.assignment2.HomePage;
 import my.edu.utar.assignment2.LearningPage.LearningPage;
 import my.edu.utar.assignment2.R;
@@ -179,8 +176,7 @@ public class Profile extends AppCompatActivity {
         chatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Profile.this, CreateNewPost.class);
-                startActivity(intent);
+                Toast.makeText(Profile.this, "hi", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -206,49 +202,42 @@ public class Profile extends AppCompatActivity {
     }
 
     private void loadUserProfile() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            // User is signed in, load user profile
-            String userId = currentUser.getUid();
-            // Load user profile using userId
-        } else {
-            db.collection("users").document(auth.getCurrentUser().getUid())
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists()) {
-                                String name = documentSnapshot.getString("username");
-                                String email = documentSnapshot.getString("email");
-                                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-                                String location = documentSnapshot.getString("location");
+        db.collection("users").document(auth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String name = documentSnapshot.getString("username");
+                            String email = documentSnapshot.getString("email");
+                            String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                            String location = documentSnapshot.getString("location");
 
-                                nameText.setText(name);
-                                emailText.setText(email);
+                            nameText.setText(name);
+                            emailText.setText(email);
 
-                                // Check if location exists, if not, set a default value
-                                if (location == null || location.isEmpty()) {
-                                    location = "Unknown";
-                                }
-                                locationText.setText(location);
-
-                                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                                    Glide.with(Profile.this).load(profileImageUrl).into(avatarImage);
-                                } else {
-                                    Glide.with(Profile.this).load(R.drawable.profile).into(avatarImage);
-                                }
-                            } else {
-                                Log.d("ProfileActivity", "No such document");
+                            // Check if location exists, if not, set a default value
+                            if (location == null || location.isEmpty()) {
+                                location = "Unknown";
                             }
+                            locationText.setText(location);
+
+                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                Glide.with(Profile.this).load(profileImageUrl).into(avatarImage);
+                            } else {
+                                Glide.with(Profile.this).load(R.drawable.profile).into(avatarImage);
+                            }
+                        } else {
+                            Log.d("ProfileActivity", "No such document");
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("ProfileActivity", "Error getting document", e);
-                        }
-                    });
-        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("ProfileActivity", "Error getting document", e);
+                    }
+                });
     }
 
 
@@ -459,8 +448,11 @@ public class Profile extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            // Retrieve gameId from document ID
+                            String game = document.getId();
+
                             Map<String, Object> data = document.getData();
-                            String dateString = (String) document.getData().get("date");
+                            String dateString = (String) data.get("date");
                             SimpleDateFormat format = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
                             Date date = null;
                             try {
@@ -479,7 +471,8 @@ public class Profile extends AppCompatActivity {
                                         date,
                                         (String) data.get("startTime"),
                                         (String) data.get("endTime"),
-                                        true // Indicates that the game date has passed
+                                        true, // Indicates that the game date has passed
+                                        game // Pass gameId to the GameRecord constructor
                                 ));
                             } else {
                                 mAdapter.addGamesRecord(new GameRecord(
@@ -490,9 +483,13 @@ public class Profile extends AppCompatActivity {
                                         date,
                                         (String) data.get("startTime"),
                                         (String) data.get("endTime"),
-                                        false // Indicates that the game date has not passed
+                                        false, // Indicates that the game date has not passed
+                                        game // Pass gameId to the GameRecord constructor
                                 ));
                             }
+
+                            // Log the retrieved gameId
+                            Log.d("Game", "Retrieved gameId: " + game);
                         }
                         mAdapter.notifyDataSetChanged();
                     } else {
