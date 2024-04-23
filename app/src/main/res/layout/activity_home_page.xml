@@ -16,10 +16,10 @@
 
         <TextView
             android:id="@+id/Home_currentLocationTextView"
-            android:layout_width="203dp"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             android:clickable="true"
             android:onClick="onCurrentLocationClicked"
             android:text="Location"
@@ -58,8 +58,8 @@
     <ScrollView
         android:id="@+id/Home_scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="390dp"
-        android:layout_marginBottom="0dp">
+        android:layout_height="400dp"
+        android:layout_marginBottom="29dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 android:layout_height="704dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/creategameBtnlayout"
+                    android:id="@+id/Home_constraintLayout"
                     android:layout_width="314dp"
                     android:layout_height="91dp"
                     android:layout_marginTop="12dp"
@@ -97,6 +97,7 @@
                         android:id="@+id/Home_creategameBtn"
                         android:layout_width="66dp"
                         android:layout_height="48dp"
+                        android:clickable="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.879"
@@ -118,7 +119,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.167"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout"
+                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout"
                     app:layout_constraintVertical_bias="0.658" />
 
                 <TextView
@@ -135,7 +136,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toEndOf="@+id/Home_JoinGameTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout"
+                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout"
                     app:layout_constraintVertical_bias="0.666" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,7 +148,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.51"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/creategameBtnlayout">
+                    app:layout_constraintTop_toBottomOf="@+id/Home_constraintLayout">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/Home_GamePic"
@@ -167,61 +168,33 @@
                         android:id="@+id/sporttype"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="24dp"
                         android:text="Sports Type"
-                        app:layout_constraintEnd_toStartOf="@+id/joinedParticipants"
+                        app:layout_constraintEnd_toStartOf="@+id/gameformat"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/gameformat"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text="Game Format"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                    <!--                        app:layout_constraintTop_toTopOf="parent"-->
-                    <!--                        app:layout_constraintVertical_bias="0.109" />-->
-
                     <TextView
-                        android:id="@+id/joinedParticipants"
+                        android:id="@+id/gameformat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="115dp"
-                        android:layout_marginTop="24dp"
-                        android:text="1"
-                        app:layout_constraintStart_toEndOf="@+id/sporttype"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:text="Game Format"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.109" />
 
                     <TextView
-                        android:id="@+id/slash"
+                        android:id="@+id/participants"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="/"
-                        app:layout_constraintStart_toEndOf="@+id/joinedParticipants"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/maxPlayers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:text="10"
-                        app:layout_constraintStart_toEndOf="@+id/slash"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/participantsText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="40dp"
-                        android:text=" Going"
-                        app:layout_constraintStart_toEndOf="@+id/maxPlayers"
+                        android:text="1/10 Going"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/gameformat"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -330,7 +303,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="66dp"
         android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -341,36 +314,38 @@
             android:id="@+id/homePageBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="36dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chatBtn"
+            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/home" />
 
         <ImageView
             android:id="@+id/chatBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="135dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/homePageBtn"
+            app:layout_constraintEnd_toStartOf="@+id/learnBtn"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/chat" />
 
         <ImageView
             android:id="@+id/learnBtn"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="230dp"
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/chatBtn"
+            app:layout_constraintEnd_toStartOf="@+id/ProfileBtn"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.496"
             app:srcCompat="@drawable/book" />
 
         <ImageView
@@ -381,10 +356,7 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.75"
-            app:layout_constraintStart_toEndOf="@+id/learnBtn"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.504"
             app:srcCompat="@drawable/profile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
