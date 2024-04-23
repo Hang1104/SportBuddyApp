@@ -11,15 +11,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/border">
 
         <TextView
             android:id="@+id/Home_currentLocationTextView"
-            android:layout_width="210dp"
-            android:layout_height="46dp"
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:clickable="true"
             android:onClick="onCurrentLocationClicked"
             android:text="Location"
