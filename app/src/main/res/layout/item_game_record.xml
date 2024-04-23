@@ -75,22 +75,22 @@
         android:layout_width="105dp"
         android:layout_height="47dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="168dp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="4dp"
         android:text="Rating"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parentLinearLayout" />
 
-    <!--    <Button-->
-<!--        android:id="@+id/viewratingbutton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="4dp"-->
-<!--        android:layout_marginEnd="52dp"-->
-<!--        android:text="View Rating"-->
-<!--        android:visibility="visible"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/parentLinearLayout" />-->
+    <Button
+        android:id="@+id/viewratingbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="52dp"
+        android:text="View Rating"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentLinearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
