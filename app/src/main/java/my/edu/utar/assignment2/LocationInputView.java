@@ -23,6 +23,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -37,9 +42,14 @@ public class LocationInputView extends AppCompatActivity implements LocationList
     private RecyclerView recyclerView;
 
     private SearchView searchView;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_input_view);
 
@@ -124,6 +134,7 @@ public class LocationInputView extends AppCompatActivity implements LocationList
             if (addresses != null && addresses.size() > 0) {
                 currentLocationName = addresses.get(0).getAddressLine(0);
                 updateLocationUI(currentLocationName);
+                updateToFirebase(currentLocationName);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,8 +157,31 @@ public class LocationInputView extends AppCompatActivity implements LocationList
     }
 
     private void updateLocationUI(String locationName) {
-        currentLocationTextView.setText(getString(R.string.current_location, locationName));
-        Log.d("Location", "Current location: " + locationName);
+        if (currentLocationTextView != null) {
+            currentLocationTextView.setText(getString(R.string.current_location, locationName));
+            Log.d("Location", "Current location: " + locationName);
+        } else {
+            Log.e("Location", "currentLocationTextView is null");
+        }
+    }
+
+    private void updateToFirebase(String location) {
+        db.collection("users").document(auth.getCurrentUser().getUid())
+                .update("location", location)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        currentLocationName = location;
+                        updateLocationUI(currentLocationName); // Update the UI to display the newly saved location
+                        Log.d("saveLocationToFirestore", "Location updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("saveLocationToFirestore", "Error updating location", e);
+                    }
+                });
     }
 
 }
