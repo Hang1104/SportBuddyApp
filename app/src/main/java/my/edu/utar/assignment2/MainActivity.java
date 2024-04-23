@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 2000); // 2000 milliseconds = 2 seconds delay
     }
-
+    
     private void navigateToLoginPage() {
         // Delay for 3 seconds before navigating to the login activity
         new Handler().postDelayed(new Runnable() {
