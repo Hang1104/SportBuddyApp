@@ -1,6 +1,7 @@
 package my.edu.utar.assignment2.ProfilePage;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 import my.edu.utar.assignment2.R;
 import my.edu.utar.assignment2.RatingPage;
+import my.edu.utar.assignment2.ViewRatingActivity;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
     private List<GameRecord> mData;
@@ -52,24 +54,32 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
 
         if (record.hasGameDatePassed()) {
             holder.rankButton.setVisibility(View.VISIBLE);
-//            holder.viewRatingButton.setVisibility(View.VISIBLE);
+            holder.viewRatingButton.setVisibility(View.VISIBLE);
             holder.rankButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Navigate to RatingPage
+                    String game = mData.get(holder.getAdapterPosition()).getGameId();
+                    Log.d("ResultAdapter", "GameId passed to RatingPage: " + game);
                     Intent intent = new Intent(v.getContext(), RatingPage.class);
+                    intent.putExtra("game", game);
                     v.getContext().startActivity(intent);
                 }
             });
-//            holder.viewRatingButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Navigate to View Rating Page
-//                }
-//            });
+            holder.viewRatingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Navigate to ViewRatingActivity
+                    String game = mData.get(holder.getAdapterPosition()).getGameId();
+                    Log.d("ResultAdapter", "GameId passed to ViewRatingActivity: " + game);
+                    Intent intent = new Intent(v.getContext(), ViewRatingActivity.class);
+                    intent.putExtra("gameId", game);
+                    v.getContext().startActivity(intent);
+                }
+            });
         } else {
             holder.rankButton.setVisibility(View.GONE);
-//            holder.viewRatingButton.setVisibility(View.GONE);
+            holder.viewRatingButton.setVisibility(View.GONE);
         }
     }
 
@@ -85,7 +95,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         TextView dateTextView;
         TextView startTimeTextView;
         TextView endTimeTextView;
-        Button rankButton;
+        Button rankButton, viewRatingButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +106,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             startTimeTextView = itemView.findViewById(R.id.startTimeTextView);
             endTimeTextView = itemView.findViewById(R.id.endTimeTextView);
             rankButton = itemView.findViewById(R.id.rankButton);
-//            viewRatingButton = itemView.findViewById(R.id.viewratingbutton);
+            viewRatingButton = itemView.findViewById(R.id.viewratingbutton);
         }
     }
 }
