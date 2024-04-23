@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -202,42 +203,46 @@ public class Profile extends AppCompatActivity {
     }
 
     private void loadUserProfile() {
-        db.collection("users").document(auth.getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            String name = documentSnapshot.getString("username");
-                            String email = documentSnapshot.getString("email");
-                            String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-                            String location = documentSnapshot.getString("location");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null){
+            db.collection("users").document(auth.getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                String name = documentSnapshot.getString("username");
+                                String email = documentSnapshot.getString("email");
+                                String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                                String location = documentSnapshot.getString("location");
 
-                            nameText.setText(name);
-                            emailText.setText(email);
+                                nameText.setText(name);
+                                emailText.setText(email);
 
-                            // Check if location exists, if not, set a default value
-                            if (location == null || location.isEmpty()) {
-                                location = "Unknown";
-                            }
-                            locationText.setText(location);
+                                // Check if location exists, if not, set a default value
+                                if (location == null || location.isEmpty()) {
+                                    location = "Unknown";
+                                }
+                                locationText.setText(location);
 
-                            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                                Glide.with(Profile.this).load(profileImageUrl).into(avatarImage);
+                                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                                    Glide.with(Profile.this).load(profileImageUrl).into(avatarImage);
+                                } else {
+                                    Glide.with(Profile.this).load(R.drawable.profile).into(avatarImage);
+                                }
                             } else {
-                                Glide.with(Profile.this).load(R.drawable.profile).into(avatarImage);
+                                Log.d("ProfileActivity", "No such document");
                             }
-                        } else {
-                            Log.d("ProfileActivity", "No such document");
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("ProfileActivity", "Error getting document", e);
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("ProfileActivity", "Error getting document", e);
+                        }
+                    });
+        }
+
     }
 
 
